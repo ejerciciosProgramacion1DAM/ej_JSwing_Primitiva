@@ -18,13 +18,30 @@ public class Ej_JSiwng_Primitiva {
             // Crear el panel con imagen de fondo
             JPanel panel = new BackgroundPanel();
 
-            // Crear y configurar el JLabel
+            // Crear y configurar el JLabel (título)
             JLabel titulo = new JLabel("Bienvenido foking pobre", SwingConstants.CENTER);
             titulo.setFont(new Font("Arial", Font.BOLD, 24));
             titulo.setForeground(Color.WHITE);
-
-            // Añadir el JLabel en la parte superior del panel
+            titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
             panel.add(titulo, BorderLayout.NORTH);
+
+            // Panel inferior para "Registrar" e "Iniciar Sesión"
+            JButton btnRegistrar = new JButton("Registrar");
+            JButton btnLogIn = new JButton("Iniciar Sesión");
+
+            JPanel surPanel = new JPanel();
+            surPanel.setOpaque(false);
+            surPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+
+            Font fuenteBoton = new Font("Ubuntu Mono", Font.BOLD, 18);
+
+            for (JButton btn : new JButton[]{btnRegistrar, btnLogIn}) {
+                btn.setFont(fuenteBoton);
+                btn.setPreferredSize(new Dimension(160, 40));
+                surPanel.add(btn);
+            }
+
+            panel.add(surPanel, BorderLayout.SOUTH);
 
             login.setContentPane(panel);
             login.setVisible(true);
@@ -33,6 +50,7 @@ public class Ej_JSiwng_Primitiva {
 
     // Clase interna para el panel de fondo
     static class BackgroundPanel extends JPanel {
+
         private BufferedImage backgroundImage;
 
         public BackgroundPanel() {
@@ -54,4 +72,3 @@ public class Ej_JSiwng_Primitiva {
         }
     }
 }
-
