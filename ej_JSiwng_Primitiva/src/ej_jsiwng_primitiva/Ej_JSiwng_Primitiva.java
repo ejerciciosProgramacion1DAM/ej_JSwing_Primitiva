@@ -41,9 +41,21 @@ public class Ej_JSiwng_Primitiva {
                 surPanel.add(btn);
             }
 
+            // Acciones de los botones
+            btnRegistrar.addActionListener(e -> {
+                new Registrar().setVisible(true);
+                login.dispose(); // cierra la ventana actual
+            });
+            
+            btnLogIn.addActionListener(e -> {
+                new LogIn().setVisible(true);
+                login.dispose(); // cierra la ventana actual
+            });
+
             panel.add(surPanel, BorderLayout.SOUTH);
 
             login.setContentPane(panel);
+            login.setLocationRelativeTo(null); // Centrar la ventana
             login.setVisible(true);
         });
     }
