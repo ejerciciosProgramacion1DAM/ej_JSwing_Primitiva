@@ -26,41 +26,271 @@ public class Registrar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jPanel1 = new javax.swing.JPanel();
+        labelSexo = new javax.swing.JLabel();
+        LabelNombre = new javax.swing.JLabel();
+        TextoDNI = new javax.swing.JTextField();
+        labelNombreLoteria = new javax.swing.JLabel();
+        labelRegistrarLoteria = new javax.swing.JLabel();
+        textoNombre = new javax.swing.JTextField();
+        btnFemenino = new javax.swing.JRadioButton();
+        labelApellidos1 = new javax.swing.JLabel();
+        btnMasculino = new javax.swing.JRadioButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        LabelFechaNacimiento = new javax.swing.JLabel();
+        dia = new javax.swing.JComboBox<>();
+        mes = new javax.swing.JComboBox<>();
+        year = new javax.swing.JComboBox<>();
+        labelDNI = new javax.swing.JLabel();
+        TextoApellido1 = new javax.swing.JTextField();
+        btnSiguiente = new javax.swing.JButton();
+        labelEmail = new javax.swing.JLabel();
+        TextoEmail = new javax.swing.JTextField();
+        labelPassw = new javax.swing.JLabel();
+        TextoPassw = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 51, 204));
+        setResizable(false);
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setBackground(new java.awt.Color(0, 102, 0));
+        jPanel1.setToolTipText("");
+
+        labelSexo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelSexo.setForeground(new java.awt.Color(255, 255, 255));
+        labelSexo.setText("Sexo");
+
+        LabelNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        LabelNombre.setForeground(new java.awt.Color(255, 255, 255));
+        LabelNombre.setText("Nombre");
+
+        TextoDNI.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        labelNombreLoteria.setBackground(new java.awt.Color(0, 153, 0));
+        labelNombreLoteria.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        labelNombreLoteria.setForeground(new java.awt.Color(255, 255, 255));
+        labelNombreLoteria.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelNombreLoteria.setText("Loterias Timo-teo");
+        labelNombreLoteria.setOpaque(true);
+
+        labelRegistrarLoteria.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        labelRegistrarLoteria.setForeground(new java.awt.Color(255, 255, 255));
+        labelRegistrarLoteria.setText("Cuentame quien eres");
+
+        textoNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        textoNombre.setActionCommand("<Not Set>");
+
+        btnFemenino.setBackground(new java.awt.Color(0, 102, 0));
+        buttonGroup1.add(btnFemenino);
+        btnFemenino.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnFemenino.setForeground(new java.awt.Color(255, 255, 255));
+        btnFemenino.setText("Femenino");
+
+        labelApellidos1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelApellidos1.setForeground(new java.awt.Color(255, 255, 255));
+        labelApellidos1.setText("Apellidos");
+
+        btnMasculino.setBackground(new java.awt.Color(0, 102, 0));
+        buttonGroup1.add(btnMasculino);
+        btnMasculino.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMasculino.setForeground(new java.awt.Color(255, 255, 255));
+        btnMasculino.setText("Masculino");
+        btnMasculino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnMasculinoActionPerformed(evt);
             }
         });
+
+        jSeparator2.setBackground(new java.awt.Color(0, 204, 0));
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator2.setToolTipText("");
+        jSeparator2.setEnabled(false);
+        jSeparator2.setOpaque(true);
+
+        LabelFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        LabelFechaNacimiento.setForeground(new java.awt.Color(255, 255, 255));
+        LabelFechaNacimiento.setText("Fecha de nacimiento");
+
+        dia.setBackground(new java.awt.Color(0, 153, 0));
+        dia.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        dia.setForeground(new java.awt.Color(255, 255, 255));
+        dia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "dia", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        dia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                diaActionPerformed(evt);
+            }
+        });
+
+        mes.setBackground(new java.awt.Color(0, 153, 0));
+        mes.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        mes.setForeground(new java.awt.Color(255, 255, 255));
+        mes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "mes", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "nobiembre", "diciembre" }));
+
+        year.setBackground(new java.awt.Color(0, 153, 0));
+        year.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        year.setForeground(new java.awt.Color(255, 255, 255));
+        year.setMaximumRowCount(100);
+        year.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "año", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944", "1943", "1942", "1941", "1940", "1939", "1938", "1937", "1936", "1935", "1934", "1933", "1932", "1931", "1930", "1929", "1928", "1927", "1926", "1925", "1924", "1923", "1922", "1921", "1920", "1919", "1918", "1917", "1916", "1915", "1914", "1913", "1912", "1911", "1910", "1909", "1908", "1907", "1906", "1905" }));
+        year.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        labelDNI.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelDNI.setForeground(new java.awt.Color(255, 255, 255));
+        labelDNI.setText("DNI");
+
+        TextoApellido1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        btnSiguiente.setBackground(new java.awt.Color(0, 153, 0));
+        btnSiguiente.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnSiguiente.setForeground(new java.awt.Color(255, 255, 255));
+        btnSiguiente.setText("Siguiente");
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteActionPerformed(evt);
+            }
+        });
+
+        labelEmail.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelEmail.setForeground(new java.awt.Color(255, 255, 255));
+        labelEmail.setText("Correo electronico");
+
+        TextoEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        labelPassw.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelPassw.setForeground(new java.awt.Color(255, 255, 255));
+        labelPassw.setText("Contraseña");
+
+        TextoPassw.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(labelNombreLoteria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LabelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelApellidos1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextoApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnMasculino)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnFemenino))
+                            .addComponent(labelSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(107, 107, 107)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(266, 266, 266)
+                                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(LabelFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextoDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(year, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(labelEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelPassw, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextoPassw, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(90, 90, 90))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(116, 116, 116)
+                        .addComponent(labelRegistrarLoteria, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(56, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(labelNombreLoteria)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addComponent(labelRegistrarLoteria)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(LabelFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(year, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(labelDNI)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextoDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(labelEmail)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(labelPassw)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TextoPassw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(LabelNombre)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(labelApellidos1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TextoApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(labelSexo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnFemenino)
+                            .addComponent(btnMasculino))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(178, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(147, 147, 147))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addComponent(jButton1)
-                .addContainerGap(190, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnMasculinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasculinoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnMasculinoActionPerformed
+
+    private void diaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_diaActionPerformed
+
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+        // TODO add your handling code here:
+        new LogIn().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnSiguienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -98,6 +328,28 @@ public class Registrar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel LabelFechaNacimiento;
+    private javax.swing.JLabel LabelNombre;
+    private javax.swing.JTextField TextoApellido1;
+    private javax.swing.JTextField TextoDNI;
+    private javax.swing.JTextField TextoEmail;
+    private javax.swing.JPasswordField TextoPassw;
+    private javax.swing.JRadioButton btnFemenino;
+    private javax.swing.JRadioButton btnMasculino;
+    private javax.swing.JButton btnSiguiente;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> dia;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel labelApellidos1;
+    private javax.swing.JLabel labelDNI;
+    private javax.swing.JLabel labelEmail;
+    private javax.swing.JLabel labelNombreLoteria;
+    private javax.swing.JLabel labelPassw;
+    private javax.swing.JLabel labelRegistrarLoteria;
+    private javax.swing.JLabel labelSexo;
+    private javax.swing.JComboBox<String> mes;
+    private javax.swing.JTextField textoNombre;
+    private javax.swing.JComboBox<String> year;
     // End of variables declaration//GEN-END:variables
 }
