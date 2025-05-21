@@ -179,7 +179,7 @@ public class LogIn extends javax.swing.JFrame {
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         // TODO add your handling code here:
-        
+        new Menu_principal().setVisible(true);
         dispose();
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
