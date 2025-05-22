@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 
 public class ConexionBaseDatos {
-    private static final String URL="jdbc:mysql://localhost:3307/bd_primitiva";
+    private static final String URL="jdbc:mysql://158.179.217.53:3306/bingo";
     private static final String USER="root";
     private static final String PASSWORD="";
     
