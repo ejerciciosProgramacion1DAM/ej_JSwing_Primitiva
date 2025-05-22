@@ -31,9 +31,10 @@ public class Menu_principal_admin extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
         btnBingo = new javax.swing.JButton();
         btnPrimitiva = new javax.swing.JButton();
-        btnData = new javax.swing.JButton();
+        btnDataUser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -74,13 +75,13 @@ public class Menu_principal_admin extends javax.swing.JFrame {
             }
         });
 
-        btnData.setBackground(new java.awt.Color(0, 153, 0));
-        btnData.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        btnData.setForeground(new java.awt.Color(255, 255, 255));
-        btnData.setText("Datos usuarios");
-        btnData.addActionListener(new java.awt.event.ActionListener() {
+        btnDataUser.setBackground(new java.awt.Color(0, 153, 0));
+        btnDataUser.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnDataUser.setForeground(new java.awt.Color(255, 255, 255));
+        btnDataUser.setText("Datos usuarios");
+        btnDataUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDataActionPerformed(evt);
+                btnDataUserActionPerformed(evt);
             }
         });
 
@@ -92,7 +93,7 @@ public class Menu_principal_admin extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDataUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPrimitiva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBingo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -107,7 +108,7 @@ public class Menu_principal_admin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnBingo, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnData, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDataUser, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(35, Short.MAX_VALUE))
@@ -125,6 +126,7 @@ public class Menu_principal_admin extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -145,9 +147,10 @@ public class Menu_principal_admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPrimitivaActionPerformed
 
-    private void btnDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataActionPerformed
+    private void btnDataUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataUserActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnDataActionPerformed
+        
+    }//GEN-LAST:event_btnDataUserActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,7 +189,7 @@ public class Menu_principal_admin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBingo;
-    private javax.swing.JButton btnData;
+    private javax.swing.JButton btnDataUser;
     private javax.swing.JButton btnPrimitiva;
     private javax.swing.JButton btnSalir;
     private javax.swing.JPanel jPanel1;

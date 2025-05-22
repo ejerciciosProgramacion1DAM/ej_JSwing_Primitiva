@@ -38,6 +38,7 @@ public class Menu_principal extends javax.swing.JFrame {
         btnData = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -152,6 +153,8 @@ public class Menu_principal extends javax.swing.JFrame {
 
     private void btnDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataActionPerformed
         // TODO add your handling code here:
+        new MenuDatosUsuario().setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnDataActionPerformed
 
     /**
