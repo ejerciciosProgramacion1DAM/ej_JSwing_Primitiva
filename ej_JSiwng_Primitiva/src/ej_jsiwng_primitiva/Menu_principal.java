@@ -149,12 +149,12 @@ public class Menu_principal extends javax.swing.JFrame {
 
     private void btnPrimitivaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimitivaActionPerformed
         // TODO add your handling code here:
+        new JuegoPrimitiva().setVisible(true);
     }//GEN-LAST:event_btnPrimitivaActionPerformed
 
     private void btnDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataActionPerformed
         // TODO add your handling code here:
         new MenuDatosUsuario().setVisible(true);
-        dispose();
     }//GEN-LAST:event_btnDataActionPerformed
 
     /**

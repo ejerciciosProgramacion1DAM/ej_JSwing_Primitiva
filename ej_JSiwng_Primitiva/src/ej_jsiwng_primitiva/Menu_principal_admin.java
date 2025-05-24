@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package ej_jsiwng_primitiva;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  *
@@ -14,7 +15,9 @@ public class Menu_principal_admin extends javax.swing.JFrame {
      * Creates new form Menu_principal_admin
      */
     public Menu_principal_admin() {
+        setUndecorated(true);
         initComponents();
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 40, 40));
     }
 
     /**
@@ -33,7 +36,7 @@ public class Menu_principal_admin extends javax.swing.JFrame {
         btnPrimitiva = new javax.swing.JButton();
         btnDataUser = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 0));
@@ -89,21 +92,21 @@ public class Menu_principal_admin extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelNombreLoteria, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelNombreLoteria, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(107, 107, 107)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnDataUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPrimitiva, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnBingo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(92, 92, 92))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(labelNombreLoteria)
-                .addGap(33, 33, 33)
+                .addGap(27, 27, 27)
                 .addComponent(btnPrimitiva, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnBingo, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -111,7 +114,7 @@ public class Menu_principal_admin extends javax.swing.JFrame {
                 .addComponent(btnDataUser, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,10 +148,12 @@ public class Menu_principal_admin extends javax.swing.JFrame {
 
     private void btnPrimitivaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimitivaActionPerformed
         // TODO add your handling code here:
+        new JuegoPrimitiva().setVisible(true);
     }//GEN-LAST:event_btnPrimitivaActionPerformed
 
     private void btnDataUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDataUserActionPerformed
         // TODO add your handling code here:
+        new MenuDatosAdmin().setVisible(true);
         
     }//GEN-LAST:event_btnDataUserActionPerformed
 
