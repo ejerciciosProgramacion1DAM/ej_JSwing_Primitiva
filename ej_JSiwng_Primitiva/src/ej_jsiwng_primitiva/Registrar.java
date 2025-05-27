@@ -4,6 +4,10 @@
  */
 package ej_jsiwng_primitiva;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,6 +30,11 @@ public class Registrar extends javax.swing.JFrame {
     private boolean bErrorDNI = true;
     private boolean bErrorContra = true;
     private boolean bErrorEmail = true;
+    private boolean bErrorDia = true;
+    private boolean bErrorMes = true;
+    private boolean bErrorYear = true;
+    private boolean bErrorNull = true;
+    private boolean bErrorSexo = true;
 
     /**
      * Creates new form Registrar
@@ -34,6 +43,38 @@ public class Registrar extends javax.swing.JFrame {
         initComponents();
     }
 
+    
+    public static String introducirDNI(String dni) {
+        String codigo;
+        codigo = dni.toUpperCase();
+        if (codigo.matches("\\d{8}+[A-Z]")) {
+            return codigo;
+        }
+        return "error";
+    }
+
+    //devuelve true si lo encuentra
+    public static boolean SQLComprobarCliente(String codigo) throws SQLException {
+        try (Connection conexion = ConexionBaseDatos.getConnection()) {
+            if (conexion != null) {
+                try {
+                    PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM tb_datos_usuarios WHERE nif=?");
+                    stmt.setString(1, codigo);
+                    ResultSet resultado = stmt.executeQuery();
+                    while (resultado.next()) {
+                        String dni = resultado.getString(1);
+                        if (dni.equals(codigo)) {
+                            return true;
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Error. Debe introducir un numero.\n");
+                }
+            }
+        }
+        return false;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,7 +102,7 @@ public class Registrar extends javax.swing.JFrame {
         year = new javax.swing.JComboBox<>();
         labelDNI = new javax.swing.JLabel();
         TextoApellido1 = new javax.swing.JTextField();
-        btnSiguiente = new javax.swing.JButton();
+        btnGuardarUser = new javax.swing.JButton();
         labelEmail = new javax.swing.JLabel();
         TextoEmail = new javax.swing.JTextField();
         labelPassw = new javax.swing.JLabel();
@@ -69,8 +110,9 @@ public class Registrar extends javax.swing.JFrame {
         btnAtras = new javax.swing.JButton();
         TextoApellido2 = new javax.swing.JTextField();
         labelApellidos2 = new javax.swing.JLabel();
+        btnIrLogin = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("registrar");
         setBackground(new java.awt.Color(255, 51, 204));
         setResizable(false);
@@ -87,6 +129,7 @@ public class Registrar extends javax.swing.JFrame {
         LabelNombre.setText("Nombre");
 
         TextoDNI.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoDNI.setNextFocusableComponent(TextoEmail);
         TextoDNI.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 TextoDNICaretUpdate(evt);
@@ -106,6 +149,7 @@ public class Registrar extends javax.swing.JFrame {
 
         textoNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         textoNombre.setActionCommand("<Not Set>");
+        textoNombre.setNextFocusableComponent(TextoApellido1);
         textoNombre.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 textoNombreCaretUpdate(evt);
@@ -117,6 +161,7 @@ public class Registrar extends javax.swing.JFrame {
         btnFemenino.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnFemenino.setForeground(new java.awt.Color(255, 255, 255));
         btnFemenino.setText("Femenino");
+        btnFemenino.setNextFocusableComponent(dia);
         btnFemenino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFemeninoActionPerformed(evt);
@@ -132,6 +177,7 @@ public class Registrar extends javax.swing.JFrame {
         btnMasculino.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnMasculino.setForeground(new java.awt.Color(255, 255, 255));
         btnMasculino.setText("Masculino");
+        btnMasculino.setNextFocusableComponent(btnFemenino);
         btnMasculino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMasculinoActionPerformed(evt);
@@ -153,6 +199,7 @@ public class Registrar extends javax.swing.JFrame {
         dia.setForeground(new java.awt.Color(255, 255, 255));
         dia.setMaximumRowCount(10);
         dia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "dia", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        dia.setNextFocusableComponent(mes);
         dia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 diaActionPerformed(evt);
@@ -164,6 +211,7 @@ public class Registrar extends javax.swing.JFrame {
         mes.setForeground(new java.awt.Color(255, 255, 255));
         mes.setMaximumRowCount(10);
         mes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "mes", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
+        mes.setNextFocusableComponent(year);
         mes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mesActionPerformed(evt);
@@ -177,6 +225,7 @@ public class Registrar extends javax.swing.JFrame {
         year.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "año", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000", "1999", "1998", "1997", "1996", "1995", "1994", "1993", "1992", "1991", "1990", "1989", "1988", "1987", "1986", "1985", "1984", "1983", "1982", "1981", "1980", "1979", "1978", "1977", "1976", "1975", "1974", "1973", "1972", "1971", "1970", "1969", "1968", "1967", "1966", "1965", "1964", "1963", "1962", "1961", "1960", "1959", "1958", "1957", "1956", "1955", "1954", "1953", "1952", "1951", "1950", "1949", "1948", "1947", "1946", "1945", "1944", "1943", "1942", "1941", "1940", "1939", "1938", "1937", "1936", "1935", "1934", "1933", "1932", "1931", "1930", "1929", "1928", "1927", "1926", "1925", "1924", "1923", "1922", "1921", "1920", "1919", "1918", "1917", "1916", "1915", "1914", "1913", "1912", "1911", "1910", "1909", "1908", "1907", "1906", "1905" }));
         year.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         year.setMaximumSize(new java.awt.Dimension(81, 81));
+        year.setNextFocusableComponent(TextoDNI);
         year.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 yearActionPerformed(evt);
@@ -188,19 +237,20 @@ public class Registrar extends javax.swing.JFrame {
         labelDNI.setText("DNI");
 
         TextoApellido1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoApellido1.setNextFocusableComponent(TextoApellido2);
         TextoApellido1.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 TextoApellido1CaretUpdate(evt);
             }
         });
 
-        btnSiguiente.setBackground(new java.awt.Color(0, 153, 0));
-        btnSiguiente.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        btnSiguiente.setForeground(new java.awt.Color(255, 255, 255));
-        btnSiguiente.setText("Siguiente");
-        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarUser.setBackground(new java.awt.Color(0, 153, 0));
+        btnGuardarUser.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnGuardarUser.setForeground(new java.awt.Color(255, 255, 255));
+        btnGuardarUser.setText("Guardar usuario");
+        btnGuardarUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSiguienteActionPerformed(evt);
+                btnGuardarUserActionPerformed(evt);
             }
         });
 
@@ -209,6 +259,7 @@ public class Registrar extends javax.swing.JFrame {
         labelEmail.setText("Correo electronico");
 
         TextoEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoEmail.setNextFocusableComponent(TextoPassw);
         TextoEmail.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 TextoEmailCaretUpdate(evt);
@@ -220,6 +271,7 @@ public class Registrar extends javax.swing.JFrame {
         labelPassw.setText("Contraseña");
 
         TextoPassw.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoPassw.setNextFocusableComponent(btnGuardarUser);
         TextoPassw.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 TextoPasswCaretUpdate(evt);
@@ -237,6 +289,7 @@ public class Registrar extends javax.swing.JFrame {
         });
 
         TextoApellido2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoApellido2.setNextFocusableComponent(btnMasculino);
         TextoApellido2.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 TextoApellido2CaretUpdate(evt);
@@ -247,6 +300,17 @@ public class Registrar extends javax.swing.JFrame {
         labelApellidos2.setForeground(new java.awt.Color(255, 255, 255));
         labelApellidos2.setText("2º Apellido ");
 
+        btnIrLogin.setBackground(new java.awt.Color(0, 102, 0));
+        btnIrLogin.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnIrLogin.setForeground(new java.awt.Color(255, 255, 255));
+        btnIrLogin.setText("Ya tienes cuenta: Inicia seison");
+        btnIrLogin.setBorderPainted(false);
+        btnIrLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIrLoginActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -256,54 +320,58 @@ public class Registrar extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TextoApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelApellidos2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardarUser))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LabelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(TextoApellido1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                                .addComponent(textoNombre, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(labelApellidos1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnMasculino)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(btnMasculino)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnFemenino))
+                                            .addComponent(labelSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(TextoApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelApellidos2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(LabelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelApellidos1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(textoNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                                                .addComponent(TextoApellido1, javax.swing.GroupLayout.Alignment.LEADING)))))
+                                .addGap(78, 78, 78)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnFemenino))
-                            .addComponent(labelSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LabelFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextoDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(year, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelPassw, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(TextoPassw, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(TextoEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(41, 41, 41))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addComponent(labelRegistrarLoteria, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(LabelFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(TextoDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(year, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(labelEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelPassw, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(TextoPassw, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(TextoEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(135, 135, 135)
+                                .addComponent(labelRegistrarLoteria, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 45, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(173, 173, 173)
+                .addComponent(btnIrLogin)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -328,10 +396,9 @@ public class Registrar extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnFemenino)
-                            .addComponent(btnMasculino))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                            .addComponent(btnMasculino)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(labelRegistrarLoteria)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,12 +423,14 @@ public class Registrar extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(labelPassw)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(TextoPassw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(17, 17, 17))))
+                                .addComponent(TextoPassw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(btnIrLogin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardarUser, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -372,7 +441,7 @@ public class Registrar extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -382,9 +451,14 @@ public class Registrar extends javax.swing.JFrame {
     private void diaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diaActionPerformed
         // TODO add your handling code here:
         this.sDia = dia.getSelectedItem().toString();
+        if (this.sDia.equals("dia")) {
+            this.bErrorDia = true;
+        } else {
+            this.bErrorDia = false;
+        }
     }//GEN-LAST:event_diaActionPerformed
 
-    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+    private void btnGuardarUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarUserActionPerformed
         // TODO add your handling code here:
         this.sFechaNaci = sDia + "/" + sMes + "/" + sYear;
 
@@ -394,11 +468,13 @@ public class Registrar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(jPanel1, "Correo electronico inválido.");
         } else if (bErrorContra == true) {
             JOptionPane.showMessageDialog(jPanel1, "Contraseña inválida. Debe tener 1 caracter minimo.");
+        } else if (bErrorDia == true || bErrorMes == true || bErrorYear == true) {
+            JOptionPane.showMessageDialog(jPanel1, "Fecha nacimiento inválida. Debe Seleccionar algun nomero en los tres campos.");
+        } else if (bErrorNull == true) {
+            JOptionPane.showMessageDialog(jPanel1, "No puede haber campos vacios.");
         } else {
-            new LogIn().setVisible(true);
-            dispose();
             try {
-                if (ControlErrores.SQLComprobarCliente(sDNI)) {
+                if (SQLComprobarCliente(sDNI)) {
                     JOptionPane.showMessageDialog(jPanel1, "El usuario ya existe.");
                     return;
                 }
@@ -419,21 +495,30 @@ public class Registrar extends javax.swing.JFrame {
                     stmt.setString(2, sCorreo);
                     stmt.setString(3, sContra);
                     stmt.execute();
-                    
+
                     stmt = conn.prepareStatement("INSERT INTO tb_victorias_usuarios VALUES (?, ?, ?)");
                     stmt.setString(1, sDNI);
                     stmt.setInt(2, 0);
                     stmt.setInt(3, 0);
                     stmt.execute();
-                    
-                    
+
                     JOptionPane.showMessageDialog(jPanel1, "Cliente guardado correctamente.");
                 }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(jPanel1, "Error al guardar: " + ex.getMessage());
             }
+            textoNombre.setText("");
+            TextoPassw.setText("");
+            TextoEmail.setText("");
+            TextoDNI.setText("");
+            TextoApellido1.setText("");
+            TextoApellido2.setText("");
+            buttonGroup1.clearSelection();
+            dia.setSelectedIndex(0);
+            mes.setSelectedIndex(0);
+            year.setSelectedIndex(0);
         }
-    }//GEN-LAST:event_btnSiguienteActionPerformed
+    }//GEN-LAST:event_btnGuardarUserActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         // TODO add your handling code here:
@@ -444,22 +529,33 @@ public class Registrar extends javax.swing.JFrame {
     private void btnFemeninoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFemeninoActionPerformed
         // TODO add your handling code here:
         this.sSexo = "F";
+        this.bErrorSexo = false;
     }//GEN-LAST:event_btnFemeninoActionPerformed
 
     private void mesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesActionPerformed
         // TODO add your handling code here:
         this.sMes = mes.getSelectedItem().toString();
+        if (this.sMes.equals("mes")) {
+            bErrorMes = true;
+        } else {
+            bErrorMes = false;
+        }
     }//GEN-LAST:event_mesActionPerformed
 
     private void yearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearActionPerformed
         // TODO add your handling code here:
         this.sYear = year.getSelectedItem().toString();
+        if (this.sYear.equals("año")) {
+            this.bErrorYear = true;
+        } else {
+            this.bErrorYear = false;
+        }
     }//GEN-LAST:event_yearActionPerformed
 
     private void TextoDNICaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoDNICaretUpdate
         // TODO add your handling code here:
         this.sDNI = TextoDNI.getText();
-        this.sDNI = ControlErrores.introducirDNI(sDNI);
+        this.sDNI = introducirDNI(sDNI);
         if (this.sDNI.equals("error")) {
             this.bErrorDNI = true;
         } else {
@@ -470,24 +566,39 @@ public class Registrar extends javax.swing.JFrame {
     private void TextoApellido1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoApellido1CaretUpdate
         // TODO add your handling code here:
         this.sApellido1 = TextoApellido1.getText();
+        if (sApellido1 == null || sApellido1.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
 
     }//GEN-LAST:event_TextoApellido1CaretUpdate
 
     private void TextoApellido2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoApellido2CaretUpdate
         // TODO add your handling code here:
         this.sApellido2 = TextoApellido2.getText();
-
+        if (sApellido2 == null || sApellido2.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
     }//GEN-LAST:event_TextoApellido2CaretUpdate
 
     private void btnMasculinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasculinoActionPerformed
         // TODO add your handling code here:
         this.sSexo = "M";
+        this.bErrorSexo = false;
 
     }//GEN-LAST:event_btnMasculinoActionPerformed
 
     private void textoNombreCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_textoNombreCaretUpdate
         // TODO add your handling code here:
         this.sNombre = textoNombre.getText();
+        if (sNombre == null || sNombre.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
     }//GEN-LAST:event_textoNombreCaretUpdate
 
     private void TextoEmailCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoEmailCaretUpdate
@@ -509,6 +620,12 @@ public class Registrar extends javax.swing.JFrame {
             this.bErrorContra = false;
         }
     }//GEN-LAST:event_TextoPasswCaretUpdate
+
+    private void btnIrLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrLoginActionPerformed
+        // TODO add your handling code here:
+        new LogIn().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnIrLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -555,8 +672,9 @@ public class Registrar extends javax.swing.JFrame {
     private javax.swing.JPasswordField TextoPassw;
     private javax.swing.JButton btnAtras;
     private javax.swing.JRadioButton btnFemenino;
+    private javax.swing.JButton btnGuardarUser;
+    private javax.swing.JButton btnIrLogin;
     private javax.swing.JRadioButton btnMasculino;
-    private javax.swing.JButton btnSiguiente;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> dia;
     private javax.swing.JPanel jPanel1;

@@ -4,17 +4,53 @@
  */
 package ej_jsiwng_primitiva;
 
+import static ej_jsiwng_primitiva.Registrar.SQLComprobarCliente;
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author samue
  */
 public class LogIn extends javax.swing.JFrame {
 
+    private String sEmail;
+    private String sContra;
+    private String sDNI;
+
     /**
      * Creates new form LogIn
      */
     public LogIn() {
         initComponents();
+    }
+
+    public String buscarEmail(String email, String passw) {
+        String sDNI = "error";  // Valor por defecto si no se encuentra
+
+        String consulta = "SELECT NIF FROM tb_usuarios WHERE Correo_electronico = ? AND password = ?";
+
+        try {
+            var conn = ConexionBaseDatos.getConnection();
+            PreparedStatement ps = conn.prepareStatement(consulta);
+            ps.setString(1, email);
+            ps.setString(2, passw);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    sDNI = rs.getString("NIF");  // Se asigna el NIF real
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al buscar el email en la base de datos: " + e.getMessage());
+        }
+
+        return sDNI;
     }
 
     /**
@@ -35,9 +71,9 @@ public class LogIn extends javax.swing.JFrame {
         labelEmail = new javax.swing.JLabel();
         TextoEmail = new javax.swing.JTextField();
         labelPassw = new javax.swing.JLabel();
-        btnSiguiente1 = new javax.swing.JButton();
+        btnIrRegistrar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("login");
         setResizable(false);
 
@@ -75,6 +111,11 @@ public class LogIn extends javax.swing.JFrame {
         });
 
         TextoPassw.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoPassw.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoPasswCaretUpdate(evt);
+            }
+        });
 
         labelEmail.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelEmail.setForeground(new java.awt.Color(255, 255, 255));
@@ -82,20 +123,25 @@ public class LogIn extends javax.swing.JFrame {
         labelEmail.setText("Correo electronico");
 
         TextoEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoEmail.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoEmailCaretUpdate(evt);
+            }
+        });
 
         labelPassw.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelPassw.setForeground(new java.awt.Color(255, 255, 255));
         labelPassw.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelPassw.setText("Contraseña");
 
-        btnSiguiente1.setBackground(new java.awt.Color(0, 102, 0));
-        btnSiguiente1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        btnSiguiente1.setForeground(new java.awt.Color(255, 255, 255));
-        btnSiguiente1.setText("No tienes cuenta: Registrate");
-        btnSiguiente1.setBorderPainted(false);
-        btnSiguiente1.addActionListener(new java.awt.event.ActionListener() {
+        btnIrRegistrar.setBackground(new java.awt.Color(0, 102, 0));
+        btnIrRegistrar.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        btnIrRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnIrRegistrar.setText("No tienes cuenta: Registrate");
+        btnIrRegistrar.setBorderPainted(false);
+        btnIrRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSiguiente1ActionPerformed(evt);
+                btnIrRegistrarActionPerformed(evt);
             }
         });
 
@@ -123,7 +169,7 @@ public class LogIn extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(19, 19, 19)
                                         .addComponent(labelEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(btnSiguiente1))
+                                    .addComponent(btnIrRegistrar))
                                 .addGap(157, 157, 157))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(labelRegistrarLoteria, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -148,7 +194,7 @@ public class LogIn extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TextoPassw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnSiguiente1)
+                .addComponent(btnIrRegistrar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,7 +206,7 @@ public class LogIn extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,15 +225,62 @@ public class LogIn extends javax.swing.JFrame {
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         // TODO add your handling code here:
-        new Menu_principal().setVisible(true);
-        dispose();
+        this.sDNI = buscarEmail(sEmail, sContra);
+
+        if (!this.sDNI.equals("error")) {
+            try {
+                var conn = ConexionBaseDatos.getConnection();
+                if (conn != null) {
+                    var stmt = conn.prepareStatement("SELECT Nombre, Apellido1, Apellido2 FROM tb_datos_usuarios WHERE NIF = ?");
+                    stmt.setString(1, this.sDNI);
+
+                    ResultSet rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        String nombre = rs.getString("Nombre");
+                        String apellido1 = rs.getString("Apellido1");
+                        String apellido2 = rs.getString("Apellido2");
+
+                        JOptionPane.showMessageDialog(jPanel1, "Bienvenido " + nombre + " " + apellido1 + " " + apellido2 + ".");
+                    } else {
+                        JOptionPane.showMessageDialog(jPanel1, "No se encontraron datos del usuario.");
+                    }
+
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(jPanel1, "Error al buscar al cliente: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(jPanel1, "Email o contraseña incorrectos.");
+        }
+
+        if (!sDNI.equals("77964837N")) {
+            new Menu_principal().setVisible(true);
+            dispose();
+        } else {
+            new Menu_principal_admin().setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
-    private void btnSiguiente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguiente1ActionPerformed
+    private void btnIrRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrRegistrarActionPerformed
         // TODO add your handling code here:
         new Registrar().setVisible(true);
         dispose();
-    }//GEN-LAST:event_btnSiguiente1ActionPerformed
+    }//GEN-LAST:event_btnIrRegistrarActionPerformed
+
+    private void TextoEmailCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoEmailCaretUpdate
+        // TODO add your handling code here:
+        this.sEmail = TextoEmail.getText();
+    }//GEN-LAST:event_TextoEmailCaretUpdate
+
+    private void TextoPasswCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoPasswCaretUpdate
+        // TODO add your handling code here:
+        this.sContra = new String(TextoPassw.getPassword());;
+
+    }//GEN-LAST:event_TextoPasswCaretUpdate
 
     /**
      * @param args the command line arguments
@@ -228,8 +321,8 @@ public class LogIn extends javax.swing.JFrame {
     private javax.swing.JTextField TextoEmail;
     private javax.swing.JPasswordField TextoPassw;
     private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnIrRegistrar;
     private javax.swing.JButton btnSiguiente;
-    private javax.swing.JButton btnSiguiente1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelNombreLoteria;
