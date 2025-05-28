@@ -4,17 +4,99 @@
  */
 package ej_jsiwng_primitiva;
 
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author samue
  */
 public class MenuDatosAdmin extends javax.swing.JFrame {
 
+    private String sDNI;
+    private String sDNIinicial;
+    private String sNombre;
+    private String sApellido1;
+    private String sApellido2;
+    private String sFechaNaci;
+    private String sCorreo;
+    private String sContra;
+    private String sSexo;
+    private String sBingo;
+    private String sPrimitiva;
+    private boolean bErrorDNI = true;
+    private boolean bErrorContra = true;
+    private boolean bErrorEmail = true;
+    private boolean bErrorFecha = true;
+    private boolean bErrorNull = true;
+    private boolean bErrorSexo = true;
+    private boolean bDNIcambiado = false;
+
     /**
      * Creates new form MenuDatosAdmin
      */
     public MenuDatosAdmin() {
         initComponents();
+    }
+
+    public boolean validar() {
+        if (bErrorDNI == true) {
+            JOptionPane.showMessageDialog(jPanel1, "DNI inválido. Debe tener 8 números y una letra mayúscula.");
+        } else if (bErrorEmail == true) {
+            JOptionPane.showMessageDialog(jPanel1, "Correo electronico inválido.");
+        } else if (bErrorContra == true) {
+            JOptionPane.showMessageDialog(jPanel1, "Contraseña inválida. Debe tener 1 caracter minimo.");
+        } else if (bErrorFecha == true) {
+            JOptionPane.showMessageDialog(jPanel1, "Fecha nacimiento inválida. Debe tener un formato de fecha (dd/mm/yyyy).");
+        } else if (bErrorNull == true) {
+            JOptionPane.showMessageDialog(jPanel1, "No puede haber campos vacios.");
+        } else if (bErrorSexo == true) {
+            JOptionPane.showMessageDialog(jPanel1, "Tiene que seleccionar una de las dos opciones del genero.");
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    public void buscar(String dni) {
+        try {
+            if (!Registrar.SQLComprobarCliente(dni)) {
+                throw new Exception();
+            }
+
+            var conn = ConexionBaseDatos.getConnection();
+            if (conn != null) {
+                var stmt = conn.prepareStatement("SELECT * FROM tb_datos_usuarios WHERE NIF = ?");
+                stmt.setString(1, dni);
+                var resultado = stmt.executeQuery();
+                if (resultado.next()) {
+                    dni = resultado.getString(1);
+                    sNombre = resultado.getString(2);
+                    sApellido1 = resultado.getString(3);
+                    sApellido2 = resultado.getString(4);
+                    sFechaNaci = resultado.getString(5);
+                    sSexo = resultado.getString(6);
+                }
+
+                stmt = conn.prepareStatement("SELECT * FROM tb_usuarios WHERE NIF=?");
+                stmt.setString(1, dni);
+                resultado = stmt.executeQuery();
+                if (resultado.next()) {
+                    sCorreo = resultado.getString(3);
+                    sContra = resultado.getString(4);
+                }
+
+                stmt = conn.prepareStatement("SELECT * FROM tb_victorias_usuarios WHERE NIF=?");
+                stmt.setString(1, dni);
+                resultado = stmt.executeQuery();
+                if (resultado.next()) {
+                    sBingo = resultado.getString(2);
+                    sPrimitiva = resultado.getString(3);
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(jPanel1, "El usuario no existe." + ex.getMessage());
+        }
     }
 
     /**
@@ -26,51 +108,64 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        TextoApellido1 = new javax.swing.JTextField();
-        TextoApellido2 = new javax.swing.JTextField();
         labelNombreLoteria1 = new javax.swing.JLabel();
-        TextoDNI = new javax.swing.JTextField();
-        TextoFechaNaci = new javax.swing.JTextField();
         labelDNI = new javax.swing.JLabel();
-        TextoNombre = new javax.swing.JTextField();
-        TextoWInBingo = new javax.swing.JTextField();
+        TextoFechaNaci1 = new javax.swing.JTextField();
         labelNombre = new javax.swing.JLabel();
+        TextoWInBingo1 = new javax.swing.JTextField();
         labelFechaNaci = new javax.swing.JLabel();
-        TextoWinPrimitiva = new javax.swing.JTextField();
-        btnAgregar = new javax.swing.JButton();
+        TextoWinPrimitiva1 = new javax.swing.JTextField();
         labelApellido1 = new javax.swing.JLabel();
+        btnModificar1 = new javax.swing.JButton();
         labelApellido2 = new javax.swing.JLabel();
         labelbingoWin = new javax.swing.JLabel();
         labelbingoWin1 = new javax.swing.JLabel();
+        TextoApellido1 = new javax.swing.JTextField();
+        TextoDNI1 = new javax.swing.JTextField();
+        labelFechaNaci2 = new javax.swing.JLabel();
+        labelApellido5 = new javax.swing.JLabel();
+        TextoCorreo1 = new javax.swing.JTextField();
+        TextoContra1 = new javax.swing.JPasswordField();
+        TextoNombre1 = new javax.swing.JTextField();
+        TextoApellido2 = new javax.swing.JTextField();
+        labelSexo = new javax.swing.JLabel();
+        btnFemenino = new javax.swing.JRadioButton();
+        btnMasculino = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         labelNombreLoteria3 = new javax.swing.JLabel();
         TextoDNI2 = new javax.swing.JTextField();
         labelDNI2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        AreaBuscar = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
-        TextoApellido3 = new javax.swing.JTextField();
-        TextoApellido4 = new javax.swing.JTextField();
-        TextoDNI1 = new javax.swing.JTextField();
-        TextoFechaNaci1 = new javax.swing.JTextField();
-        labelDNI1 = new javax.swing.JLabel();
-        TextoNombre1 = new javax.swing.JTextField();
-        TextoWInBingo1 = new javax.swing.JTextField();
-        labelNombre1 = new javax.swing.JLabel();
-        labelFechaNaci1 = new javax.swing.JLabel();
-        TextoWinPrimitiva1 = new javax.swing.JTextField();
         btnModificar2 = new javax.swing.JButton();
-        labelApellido3 = new javax.swing.JLabel();
-        labelApellido4 = new javax.swing.JLabel();
-        labelbingoWin2 = new javax.swing.JLabel();
-        labelbingoWin3 = new javax.swing.JLabel();
-        btnModificar = new javax.swing.JButton();
-        labelNombreLoteria2 = new javax.swing.JLabel();
         TextoDNI3 = new javax.swing.JTextField();
         labelDNI3 = new javax.swing.JLabel();
+        labelDNI5 = new javax.swing.JLabel();
+        TextoFechaNaci2 = new javax.swing.JTextField();
+        labelNombre2 = new javax.swing.JLabel();
+        TextoWInBingo2 = new javax.swing.JTextField();
+        labelFechaNaci3 = new javax.swing.JLabel();
+        TextoWinPrimitiva2 = new javax.swing.JTextField();
+        labelApellido6 = new javax.swing.JLabel();
+        btnModificar3 = new javax.swing.JButton();
+        labelApellido7 = new javax.swing.JLabel();
+        labelbingoWin4 = new javax.swing.JLabel();
+        labelbingoWin5 = new javax.swing.JLabel();
+        TextoApellido5 = new javax.swing.JTextField();
+        TextoDNI5 = new javax.swing.JTextField();
+        labelFechaNaci1 = new javax.swing.JLabel();
+        labelApellido3 = new javax.swing.JLabel();
+        TextoCorreo2 = new javax.swing.JTextField();
+        TextoContra2 = new javax.swing.JPasswordField();
+        TextoNombre2 = new javax.swing.JTextField();
+        labelNombreLoteria5 = new javax.swing.JLabel();
+        TextoApellido6 = new javax.swing.JTextField();
+        labelbingoWin6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         btnEliminar = new javax.swing.JButton();
         labelNombreLoteria4 = new javax.swing.JLabel();
@@ -87,10 +182,6 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 0));
 
-        TextoApellido1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        TextoApellido2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
         labelNombreLoteria1.setBackground(new java.awt.Color(0, 153, 0));
         labelNombreLoteria1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         labelNombreLoteria1.setForeground(new java.awt.Color(255, 255, 255));
@@ -98,50 +189,52 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         labelNombreLoteria1.setText("Loterias Timo-Theo");
         labelNombreLoteria1.setOpaque(true);
 
-        TextoDNI.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        TextoDNI.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoDNIActionPerformed(evt);
-            }
-        });
-
-        TextoFechaNaci.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
         labelDNI.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelDNI.setForeground(new java.awt.Color(255, 255, 255));
         labelDNI.setText("DNI:");
 
-        TextoNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        TextoWInBingo.setEditable(false);
-        TextoWInBingo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        TextoWInBingo.setText("0");
+        TextoFechaNaci1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoFechaNaci1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoFechaNaci1CaretUpdate(evt);
+            }
+        });
 
         labelNombre.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelNombre.setForeground(new java.awt.Color(255, 255, 255));
         labelNombre.setText("Nombre:");
 
+        TextoWInBingo1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoWInBingo1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoWInBingo1CaretUpdate(evt);
+            }
+        });
+
         labelFechaNaci.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelFechaNaci.setForeground(new java.awt.Color(255, 255, 255));
         labelFechaNaci.setText("Fecha nacimiento(dd/mm/aaaa):");
 
-        TextoWinPrimitiva.setEditable(false);
-        TextoWinPrimitiva.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        TextoWinPrimitiva.setText("0");
-
-        btnAgregar.setBackground(new java.awt.Color(0, 153, 0));
-        btnAgregar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgregar.setText("Añadir usuario");
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
+        TextoWinPrimitiva1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoWinPrimitiva1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoWinPrimitiva1CaretUpdate(evt);
             }
         });
 
         labelApellido1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelApellido1.setForeground(new java.awt.Color(255, 255, 255));
         labelApellido1.setText("Primer apellido:");
+
+        btnModificar1.setBackground(new java.awt.Color(0, 153, 0));
+        btnModificar1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnModificar1.setForeground(new java.awt.Color(255, 255, 255));
+        btnModificar1.setText("Guardar cambios");
+        btnModificar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificar1ActionPerformed(evt);
+            }
+        });
 
         labelApellido2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelApellido2.setForeground(new java.awt.Color(255, 255, 255));
@@ -155,84 +248,193 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         labelbingoWin1.setForeground(new java.awt.Color(255, 255, 255));
         labelbingoWin1.setText("Victorias en la primitiva:");
 
+        TextoApellido1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoApellido1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoApellido1CaretUpdate(evt);
+            }
+        });
+
+        TextoDNI1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoDNI1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoDNI1CaretUpdate(evt);
+            }
+        });
+
+        labelFechaNaci2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelFechaNaci2.setForeground(new java.awt.Color(255, 255, 255));
+        labelFechaNaci2.setText("Contraseña:");
+
+        labelApellido5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelApellido5.setForeground(new java.awt.Color(255, 255, 255));
+        labelApellido5.setText("Correo electronico:");
+
+        TextoCorreo1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoCorreo1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoCorreo1CaretUpdate(evt);
+            }
+        });
+
+        TextoContra1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoContra1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoContra1CaretUpdate(evt);
+            }
+        });
+
+        TextoNombre1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoNombre1.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoNombre1CaretUpdate(evt);
+            }
+        });
+
+        TextoApellido2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoApellido2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoApellido2CaretUpdate(evt);
+            }
+        });
+
+        labelSexo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelSexo.setForeground(new java.awt.Color(255, 255, 255));
+        labelSexo.setText("Sexo");
+
+        btnFemenino.setBackground(new java.awt.Color(0, 102, 0));
+        buttonGroup1.add(btnFemenino);
+        btnFemenino.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnFemenino.setForeground(new java.awt.Color(255, 255, 255));
+        btnFemenino.setText("Femenino");
+        btnFemenino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFemeninoActionPerformed(evt);
+            }
+        });
+
+        btnMasculino.setBackground(new java.awt.Color(0, 102, 0));
+        buttonGroup1.add(btnMasculino);
+        btnMasculino.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMasculino.setForeground(new java.awt.Color(255, 255, 255));
+        btnMasculino.setText("Masculino");
+        btnMasculino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMasculinoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelNombreLoteria1, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addComponent(labelNombreLoteria1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
+                        .addComponent(labelFechaNaci2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(TextoContra1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelFechaNaci, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
-                                .addComponent(TextoFechaNaci, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelbingoWin, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelbingoWin1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(TextoWinPrimitiva)
-                                    .addComponent(TextoWInBingo, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addComponent(btnMasculino)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnFemenino))
+                            .addComponent(labelSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnModificar1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelbingoWin, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelApellido5, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelbingoWin1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TextoWinPrimitiva1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextoCorreo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextoWInBingo1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(22, 22, 22)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(labelDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TextoDNI1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(labelApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TextoApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TextoNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(labelApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TextoApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(labelFechaNaci, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(TextoFechaNaci1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(7, 7, 7)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(labelNombreLoteria1)
-                .addGap(40, 40, 40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelDNI)
-                    .addComponent(TextoDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelApellido5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextoCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelNombre)
-                    .addComponent(TextoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextoContra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelFechaNaci2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelApellido1)
-                    .addComponent(TextoApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextoWInBingo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelbingoWin))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TextoApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelFechaNaci)
-                    .addComponent(TextoFechaNaci, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelbingoWin)
-                    .addComponent(TextoWInBingo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelbingoWin1)
-                    .addComponent(TextoWinPrimitiva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addComponent(btnAgregar)
-                .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(TextoWinPrimitiva1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelbingoWin1))
+                .addGap(9, 9, 9)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnModificar1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(labelSexo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnFemenino)
+                            .addComponent(btnMasculino))))
+                .addGap(39, 39, 39))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(72, 72, 72)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labelDNI)
+                        .addComponent(TextoDNI1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelNombre)
+                        .addComponent(TextoNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelApellido1)
+                        .addComponent(TextoApellido1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(TextoApellido2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelFechaNaci)
+                        .addComponent(TextoFechaNaci1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(303, Short.MAX_VALUE)))
         );
 
         jTabbedPane2.addTab("Agregar", jPanel1);
@@ -257,9 +459,9 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         labelNombreLoteria3.setOpaque(true);
 
         TextoDNI2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        TextoDNI2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoDNI2ActionPerformed(evt);
+        TextoDNI2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoDNI2CaretUpdate(evt);
             }
         });
 
@@ -268,29 +470,31 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         labelDNI2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelDNI2.setText("DNI a buscar:");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(0, 153, 0));
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        AreaBuscar.setEditable(false);
+        AreaBuscar.setBackground(new java.awt.Color(0, 153, 0));
+        AreaBuscar.setColumns(20);
+        AreaBuscar.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
+        AreaBuscar.setForeground(new java.awt.Color(255, 255, 255));
+        AreaBuscar.setRows(5);
+        jScrollPane1.setViewportView(AreaBuscar);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(labelNombreLoteria3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 83, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(103, 103, 103)
-                .addComponent(labelDNI2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(TextoDNI2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnBuscar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(78, 78, 78)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(labelDNI2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TextoDNI2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnBuscar)))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,94 +506,28 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
                     .addComponent(TextoDNI2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelDNI2))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 112, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 150, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Buscar", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 0));
 
-        TextoApellido3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        TextoApellido4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        TextoDNI1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        TextoDNI1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoDNI1ActionPerformed(evt);
-            }
-        });
-
-        TextoFechaNaci1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        labelDNI1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        labelDNI1.setForeground(new java.awt.Color(255, 255, 255));
-        labelDNI1.setText("DNI:");
-
-        TextoNombre1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        TextoWInBingo1.setEditable(false);
-        TextoWInBingo1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        labelNombre1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        labelNombre1.setForeground(new java.awt.Color(255, 255, 255));
-        labelNombre1.setText("Nombre:");
-
-        labelFechaNaci1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        labelFechaNaci1.setForeground(new java.awt.Color(255, 255, 255));
-        labelFechaNaci1.setText("Fecha nacimiento(dd/mm/aaaa):");
-
-        TextoWinPrimitiva1.setEditable(false);
-        TextoWinPrimitiva1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
         btnModificar2.setBackground(new java.awt.Color(0, 153, 0));
-        btnModificar2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnModificar2.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         btnModificar2.setForeground(new java.awt.Color(255, 255, 255));
-        btnModificar2.setText("Guardar cambios");
+        btnModificar2.setText("Cargar datos");
         btnModificar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificar2ActionPerformed(evt);
             }
         });
 
-        labelApellido3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        labelApellido3.setForeground(new java.awt.Color(255, 255, 255));
-        labelApellido3.setText("Primer apellido:");
-
-        labelApellido4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        labelApellido4.setForeground(new java.awt.Color(255, 255, 255));
-        labelApellido4.setText("Segundo apellido:");
-
-        labelbingoWin2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        labelbingoWin2.setForeground(new java.awt.Color(255, 255, 255));
-        labelbingoWin2.setText("Victorias en el bingo:");
-
-        labelbingoWin3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        labelbingoWin3.setForeground(new java.awt.Color(255, 255, 255));
-        labelbingoWin3.setText("Victorias en la primitiva:");
-
-        btnModificar.setBackground(new java.awt.Color(0, 153, 0));
-        btnModificar.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        btnModificar.setForeground(new java.awt.Color(255, 255, 255));
-        btnModificar.setText("Cargar datos");
-        btnModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
-            }
-        });
-
-        labelNombreLoteria2.setBackground(new java.awt.Color(0, 153, 0));
-        labelNombreLoteria2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        labelNombreLoteria2.setForeground(new java.awt.Color(255, 255, 255));
-        labelNombreLoteria2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelNombreLoteria2.setText("Loterias Timo-Theo");
-        labelNombreLoteria2.setOpaque(true);
-
         TextoDNI3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        TextoDNI3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoDNI3ActionPerformed(evt);
+        TextoDNI3.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoDNI3CaretUpdate(evt);
             }
         });
 
@@ -398,100 +536,220 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         labelDNI3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         labelDNI3.setText("DNI actual:");
 
+        labelDNI5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelDNI5.setForeground(new java.awt.Color(255, 255, 255));
+        labelDNI5.setText("DNI:");
+
+        TextoFechaNaci2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoFechaNaci2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoFechaNaci2CaretUpdate(evt);
+            }
+        });
+
+        labelNombre2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelNombre2.setForeground(new java.awt.Color(255, 255, 255));
+        labelNombre2.setText("Nombre:");
+
+        TextoWInBingo2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoWInBingo2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoWInBingo2CaretUpdate(evt);
+            }
+        });
+
+        labelFechaNaci3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelFechaNaci3.setForeground(new java.awt.Color(255, 255, 255));
+        labelFechaNaci3.setText("Fecha nacimiento(dd/mm/aaaa):");
+
+        TextoWinPrimitiva2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoWinPrimitiva2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoWinPrimitiva2CaretUpdate(evt);
+            }
+        });
+
+        labelApellido6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelApellido6.setForeground(new java.awt.Color(255, 255, 255));
+        labelApellido6.setText("Primer apellido:");
+
+        btnModificar3.setBackground(new java.awt.Color(0, 153, 0));
+        btnModificar3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnModificar3.setForeground(new java.awt.Color(255, 255, 255));
+        btnModificar3.setText("Guardar cambios");
+        btnModificar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificar3ActionPerformed(evt);
+            }
+        });
+
+        labelApellido7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelApellido7.setForeground(new java.awt.Color(255, 255, 255));
+        labelApellido7.setText("Segundo apellido:");
+
+        labelbingoWin4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelbingoWin4.setForeground(new java.awt.Color(255, 255, 255));
+        labelbingoWin4.setText("Victorias en el bingo:");
+
+        labelbingoWin5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelbingoWin5.setForeground(new java.awt.Color(255, 255, 255));
+        labelbingoWin5.setText("Victorias en la primitiva:");
+
+        TextoApellido5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoApellido5.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoApellido5CaretUpdate(evt);
+            }
+        });
+
+        TextoDNI5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoDNI5.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoDNI5CaretUpdate(evt);
+            }
+        });
+
+        labelFechaNaci1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelFechaNaci1.setForeground(new java.awt.Color(255, 255, 255));
+        labelFechaNaci1.setText("Contraseña:");
+
+        labelApellido3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelApellido3.setForeground(new java.awt.Color(255, 255, 255));
+        labelApellido3.setText("Correo electronico:");
+
+        TextoCorreo2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoCorreo2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoCorreo2CaretUpdate(evt);
+            }
+        });
+
+        TextoContra2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoContra2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoContra2CaretUpdate(evt);
+            }
+        });
+
+        TextoNombre2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoNombre2.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoNombre2CaretUpdate(evt);
+            }
+        });
+
+        labelNombreLoteria5.setBackground(new java.awt.Color(0, 153, 0));
+        labelNombreLoteria5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        labelNombreLoteria5.setForeground(new java.awt.Color(255, 255, 255));
+        labelNombreLoteria5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelNombreLoteria5.setText("Loterias Timo-Theo");
+        labelNombreLoteria5.setOpaque(true);
+
+        TextoApellido6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        TextoApellido6.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoApellido6CaretUpdate(evt);
+            }
+        });
+
+        labelbingoWin6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelbingoWin6.setForeground(new java.awt.Color(255, 255, 255));
+        labelbingoWin6.setText("Victorias en la primitiva:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelNombreLoteria2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelNombreLoteria5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(33, 33, 33)
                 .addComponent(labelDNI3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(TextoDNI3, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnModificar)
-                .addGap(91, 91, 91))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(16, 16, 16)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnModificar2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(TextoDNI3, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnModificar2)
+                .addContainerGap(63, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelDNI5, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelNombre2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelFechaNaci1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelbingoWin4, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelbingoWin5)
+                    .addComponent(labelApellido6, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelApellido3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelbingoWin6, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelFechaNaci3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelApellido7, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnModificar3, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(labelDNI1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoDNI1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(labelApellido3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoApellido3, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(labelNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(labelApellido4, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoApellido4, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(labelFechaNaci1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TextoFechaNaci1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelbingoWin2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelbingoWin3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(TextoWinPrimitiva1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                                    .addComponent(TextoWInBingo1)))))
-                    .addGap(16, 16, 16)))
+                            .addComponent(TextoCorreo2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextoFechaNaci2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TextoDNI5, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextoNombre2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextoApellido5, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(TextoApellido6, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextoContra2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextoWInBingo2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TextoWinPrimitiva2, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(labelNombreLoteria2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnModificar)
-                    .addComponent(TextoDNI3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelDNI3))
-                .addGap(0, 435, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(101, 101, 101)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labelDNI1)
-                        .addComponent(TextoDNI1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelNombre1)
-                        .addComponent(TextoNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelApellido3)
-                        .addComponent(TextoApellido3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelApellido4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(TextoApellido4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelFechaNaci1)
-                        .addComponent(TextoFechaNaci1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labelbingoWin2)
-                        .addComponent(TextoWInBingo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(labelbingoWin3)
-                        .addComponent(TextoWinPrimitiva1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addComponent(btnModificar2)
-                    .addContainerGap(40, Short.MAX_VALUE)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelbingoWin5)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(labelNombreLoteria5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnModificar2)
+                            .addComponent(labelDNI3)
+                            .addComponent(TextoDNI3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoDNI5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelDNI5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoNombre2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelNombre2))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoApellido5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelApellido6))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoApellido6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelApellido7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoFechaNaci2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelFechaNaci3))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoCorreo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelApellido3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoContra2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelFechaNaci1))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoWInBingo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelbingoWin4))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextoWinPrimitiva2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelbingoWin6))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModificar3)))
+                .addContainerGap())
         );
 
         jTabbedPane2.addTab("Modificar", jPanel3);
@@ -516,9 +774,9 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         labelNombreLoteria4.setOpaque(true);
 
         TextoDNI4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        TextoDNI4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoDNI4ActionPerformed(evt);
+        TextoDNI4.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                TextoDNI4CaretUpdate(evt);
             }
         });
 
@@ -531,9 +789,9 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelNombreLoteria4, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
+            .addComponent(labelNombreLoteria4, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(108, 108, 108)
+                .addGap(98, 98, 98)
                 .addComponent(labelDNI4, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(TextoDNI4, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -545,12 +803,12 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(labelNombreLoteria4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEliminar)
                     .addComponent(TextoDNI4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelDNI4))
-                .addGap(0, 429, Short.MAX_VALUE))
+                .addGap(0, 502, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Eliminar", jPanel4);
@@ -570,6 +828,8 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         areaVer.setEditable(false);
         areaVer.setBackground(new java.awt.Color(0, 153, 0));
         areaVer.setColumns(20);
+        areaVer.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        areaVer.setForeground(new java.awt.Color(255, 255, 255));
         areaVer.setRows(5);
         jScrollPane2.setViewportView(areaVer);
 
@@ -578,19 +838,19 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(286, 286, 286)
                 .addComponent(btnVer)
-                .addContainerGap(307, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnVer)
                 .addGap(24, 24, 24))
@@ -602,59 +862,473 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+            .addComponent(jTabbedPane2)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TextoDNIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoDNIActionPerformed
+    private void TextoFechaNaci1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoFechaNaci1CaretUpdate
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextoDNIActionPerformed
+        this.sFechaNaci = TextoFechaNaci1.getText();
+        if (!sFechaNaci.matches("^([0][1-9]|[12][0-9]|3[01])/([0][1-9]|1[0-2])/\\d{4}$")) {
+            this.bErrorFecha = true;
+        } else {
+            this.bErrorFecha = false;
+        }
+    }//GEN-LAST:event_TextoFechaNaci1CaretUpdate
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+    private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgregarActionPerformed
+        if (validar()) {
+            try {
+                if (Registrar.SQLComprobarCliente(sDNI)) {
+                    throw new Exception();
+                }
 
-    private void TextoDNI1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoDNI1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextoDNI1ActionPerformed
+                var conn = ConexionBaseDatos.getConnection();
+                if (conn != null) {
+                    var stmt = conn.prepareStatement("INSERT INTO tb_datos_usuarios VALUES (?, ?, ?, ?, ?, ?)");
+                    stmt.setString(1, sDNI);
+                    stmt.setString(2, sNombre);
+                    stmt.setString(3, sApellido1);
+                    stmt.setString(4, sApellido2);
+                    stmt.setString(5, sFechaNaci);
+                    stmt.setString(6, sSexo);
+                    stmt.execute();
 
-    private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnModificar2ActionPerformed
+                    stmt = conn.prepareStatement("INSERT INTO tb_usuarios (NIF, Correo_electronico, Password) VALUES (?, ?, ?)");
+                    stmt.setString(1, sDNI);
+                    stmt.setString(2, sCorreo);
+                    stmt.setString(3, sContra);
+                    stmt.execute();
 
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnModificarActionPerformed
+                    stmt = conn.prepareStatement("INSERT INTO tb_victorias_usuarios VALUES (?, ?, ?)");
+                    stmt.setString(1, sDNI);
+                    stmt.setInt(2, Integer.parseInt(sBingo));
+                    stmt.setInt(3, Integer.parseInt(sPrimitiva));
+                    stmt.execute();
 
-    private void TextoDNI3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoDNI3ActionPerformed
+                    JOptionPane.showMessageDialog(jPanel1, "Cliente guardado correctamente.");
+
+                    TextoDNI1.setText("");
+                    TextoNombre1.setText("");
+                    TextoApellido1.setText("");
+                    TextoApellido2.setText("");
+                    TextoFechaNaci1.setText("");
+                    TextoCorreo1.setText("");
+                    TextoContra1.setText("");
+                    TextoWInBingo1.setText("");
+                    TextoWinPrimitiva1.setText("");
+                    buttonGroup1.clearSelection();
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(jPanel1, "El usuario ya existe.");
+            }
+        }
+    }//GEN-LAST:event_btnModificar1ActionPerformed
+
+    private void TextoApellido1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoApellido1CaretUpdate
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextoDNI3ActionPerformed
+        this.sApellido1 = TextoApellido1.getText();
+        if (sApellido1 == null || sApellido1.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
+    }//GEN-LAST:event_TextoApellido1CaretUpdate
+
+    private void TextoDNI1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoDNI1CaretUpdate
+        // TODO add your handling code here:
+        this.sDNI = TextoDNI1.getText();
+        this.sDNI = Registrar.introducirDNI(sDNI);
+        if (this.sDNI.equals("error")) {
+            this.bErrorDNI = true;
+        } else {
+            this.bErrorDNI = false;
+        }
+    }//GEN-LAST:event_TextoDNI1CaretUpdate
+
+    private void TextoCorreo1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoCorreo1CaretUpdate
+        // TODO add your handling code here:
+        this.sCorreo = TextoCorreo1.getText();
+        if (!sCorreo.matches("^[\\w.-]+@([\\w-]+\\.)+[a-zA-Z]{2,4}$")) {
+            this.bErrorEmail = true;
+        } else {
+            this.bErrorEmail = false;
+        }
+    }//GEN-LAST:event_TextoCorreo1CaretUpdate
+
+    private void TextoNombre1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoNombre1CaretUpdate
+        // TODO add your handling code here:
+        this.sNombre = TextoNombre1.getText();
+        if (sNombre == null || sNombre.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
+    }//GEN-LAST:event_TextoNombre1CaretUpdate
+
+    private void TextoApellido2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoApellido2CaretUpdate
+        // TODO add your handling code here:
+        this.sApellido2 = TextoApellido2.getText();
+        if (sApellido2 == null || sApellido2.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
+    }//GEN-LAST:event_TextoApellido2CaretUpdate
+
+    private void TextoContra1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoContra1CaretUpdate
+        // TODO add your handling code here:
+        this.sContra = new String(TextoContra1.getPassword());
+        if (sContra.length() < 1) {
+            this.bErrorContra = true;
+        } else {
+            this.bErrorContra = false;
+        }
+    }//GEN-LAST:event_TextoContra1CaretUpdate
+
+    private void TextoWInBingo1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoWInBingo1CaretUpdate
+        // TODO add your handling code here:
+        this.sBingo = TextoWInBingo1.getText();
+    }//GEN-LAST:event_TextoWInBingo1CaretUpdate
+
+    private void TextoWinPrimitiva1CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoWinPrimitiva1CaretUpdate
+        // TODO add your handling code here:
+        this.sPrimitiva = TextoWinPrimitiva1.getText();
+    }//GEN-LAST:event_TextoWinPrimitiva1CaretUpdate
+
+    private void btnFemeninoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFemeninoActionPerformed
+        // TODO add your handling code here:
+        this.sSexo = "F";
+        this.bErrorSexo = false;
+    }//GEN-LAST:event_btnFemeninoActionPerformed
+
+    private void btnMasculinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMasculinoActionPerformed
+        // TODO add your handling code here:
+        this.sSexo = "M";
+        this.bErrorSexo = false;
+    }//GEN-LAST:event_btnMasculinoActionPerformed
+
+    private void TextoDNI2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoDNI2CaretUpdate
+        // TODO add your handling code here:
+        this.sDNI = TextoDNI2.getText();
+        this.sDNI = Registrar.introducirDNI(sDNI);
+        if (this.sDNI.equals("error")) {
+            this.bErrorDNI = true;
+        } else {
+            this.bErrorDNI = false;
+        }
+    }//GEN-LAST:event_TextoDNI2CaretUpdate
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
+        if (bErrorDNI == true) {
+            JOptionPane.showMessageDialog(jPanel1, "DNI inválido. Debe tener 8 números y una letra mayúscula.");
+        } else {
+            buscar(sDNI);
+            AreaBuscar.setText(" DNI: " + sDNI + "\n"
+                    + " Nombre: " + sNombre + "\n"
+                    + " Apellidos: " + sApellido1 + " " + sApellido2 + "\n"
+                    + " Fecha de nacimiento: " + sFechaNaci + "\n"
+                    + " Sexo: " + sSexo + "\n"
+                    + " Correo electronico: " + sCorreo + "\n"
+                    + " Contraseña: " + sContra + "\n"
+                    + " Victorias en el Bingo: " + sBingo + "\n"
+                    + " Victorias en la Primitiva: " + sPrimitiva);
+
+            TextoDNI2.setText("");
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void TextoDNI2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoDNI2ActionPerformed
+    private void TextoDNI3CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoDNI3CaretUpdate
         // TODO add your handling code here:
-    }//GEN-LAST:event_TextoDNI2ActionPerformed
+        this.sDNIinicial = TextoDNI3.getText();
+        this.sDNI = this.sDNIinicial;
+        this.sDNIinicial = Registrar.introducirDNI(sDNIinicial);
+        if (this.sDNIinicial.equals("error")) {
+            this.bErrorDNI = true;
+        } else {
+            this.bErrorDNI = false;
+        }
+    }//GEN-LAST:event_TextoDNI3CaretUpdate
+
+    private void TextoDNI5CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoDNI5CaretUpdate
+        // TODO add your handling code here:
+        this.sDNI = TextoDNI5.getText();
+        this.sDNI = Registrar.introducirDNI(sDNI);
+        if (this.sDNI.equals("error")) {
+            this.bErrorDNI = true;
+        } else {
+            this.bErrorDNI = false;
+        }
+        if (this.sDNI.equals(sDNIinicial)) {
+            this.bDNIcambiado = false;
+        } else {
+            this.bDNIcambiado = true;
+        }
+    }//GEN-LAST:event_TextoDNI5CaretUpdate
+
+    private void TextoNombre2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoNombre2CaretUpdate
+        // TODO add your handling code here:
+        this.sNombre = TextoNombre2.getText();
+        if (sNombre == null || sNombre.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
+    }//GEN-LAST:event_TextoNombre2CaretUpdate
+
+    private void TextoApellido5CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoApellido5CaretUpdate
+        // TODO add your handling code here:
+        this.sApellido1 = TextoApellido5.getText();
+        if (sApellido1 == null || sApellido1.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
+    }//GEN-LAST:event_TextoApellido5CaretUpdate
+
+    private void TextoApellido6CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoApellido6CaretUpdate
+        // TODO add your handling code here:
+        this.sApellido2 = TextoApellido6.getText();
+        if (sApellido2 == null || sApellido2.trim().isEmpty()) {
+            this.bErrorNull = true;
+        } else {
+            this.bErrorNull = false;
+        }
+    }//GEN-LAST:event_TextoApellido6CaretUpdate
+
+    private void TextoFechaNaci2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoFechaNaci2CaretUpdate
+        // TODO add your handling code here:
+        this.sFechaNaci = TextoFechaNaci2.getText();
+        if (!sFechaNaci.matches("^([0][1-9]|[12][0-9]|3[01])/([0][1-9]|1[0-2])/\\d{4}$")) {
+            this.bErrorFecha = true;
+        } else {
+            this.bErrorFecha = false;
+        }
+    }//GEN-LAST:event_TextoFechaNaci2CaretUpdate
+
+    private void TextoCorreo2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoCorreo2CaretUpdate
+        // TODO add your handling code here:
+        this.sCorreo = TextoCorreo2.getText();
+        if (!sCorreo.matches("^[\\w.-]+@([\\w-]+\\.)+[a-zA-Z]{2,4}$")) {
+            this.bErrorEmail = true;
+        } else {
+            this.bErrorEmail = false;
+        }
+    }//GEN-LAST:event_TextoCorreo2CaretUpdate
+
+    private void TextoContra2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoContra2CaretUpdate
+        // TODO add your handling code here:
+        this.sContra = new String(TextoContra2.getPassword());
+        if (sContra.length() < 1) {
+            this.bErrorContra = true;
+        } else {
+            this.bErrorContra = false;
+        }
+    }//GEN-LAST:event_TextoContra2CaretUpdate
+
+    private void TextoWInBingo2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoWInBingo2CaretUpdate
+        // TODO add your handling code here:
+        this.sBingo = TextoWInBingo2.getText();
+
+    }//GEN-LAST:event_TextoWInBingo2CaretUpdate
+
+    private void TextoWinPrimitiva2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoWinPrimitiva2CaretUpdate
+        // TODO add your handling code here:
+        this.sPrimitiva = TextoWinPrimitiva2.getText();
+
+    }//GEN-LAST:event_TextoWinPrimitiva2CaretUpdate
+
+    private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            if (!Registrar.SQLComprobarCliente(sDNI)) {
+                throw new Exception();
+            }
+            buscar(sDNI);
+
+            TextoDNI5.setText(sDNI);
+            TextoNombre2.setText(sNombre);
+            TextoApellido5.setText(sApellido1);
+            TextoApellido6.setText(sApellido2);
+            TextoFechaNaci2.setText(sFechaNaci);
+            TextoCorreo2.setText(sCorreo);
+            TextoContra2.setText(sContra);
+            TextoWInBingo2.setText(sBingo);
+            TextoWinPrimitiva2.setText(sPrimitiva);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(jPanel1, "El usuario no existe.");
+            TextoDNI3.setText("");
+            TextoDNI5.setText("");
+            TextoNombre2.setText("");
+            TextoApellido5.setText("");
+            TextoApellido6.setText("");
+            TextoFechaNaci2.setText("");
+            TextoCorreo2.setText("");
+            TextoContra2.setText("");
+            TextoWInBingo2.setText("");
+            TextoWinPrimitiva2.setText("");
+        }
+
+    }//GEN-LAST:event_btnModificar2ActionPerformed
+
+    private void btnModificar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar3ActionPerformed
+        // TODO add your handling code here:
+        bErrorSexo = false;
+        if (validar()) {
+            try {
+                if (bDNIcambiado) {
+                    if (Registrar.SQLComprobarCliente(sDNI)) {
+                        throw new Exception();
+                    }
+                }
+
+                var conn = ConexionBaseDatos.getConnection();
+                if (conn != null) {
+
+                    var stmt = conn.prepareStatement("UPDATE tb_victorias_usuarios SET NIF = ?, victorias_bingo = ?, victorias_primitiva = ? WHERE tb_victorias_usuarios.NIF = ?;");
+                    stmt.setString(1, sDNI);
+                    stmt.setInt(2, Integer.parseInt(LogIn.wins_usuario[0]));
+                    stmt.setInt(3, Integer.parseInt(LogIn.wins_usuario[1]));
+                    stmt.setString(4, sDNIinicial);
+                    stmt.execute();
+
+                    stmt = conn.prepareStatement("UPDATE tb_usuarios SET NIF = ?, Correo_electronico = ?, Password = ? WHERE tb_usuarios.NIF = ?;");
+                    stmt.setString(1, sDNI);
+                    stmt.setString(2, sCorreo);
+                    stmt.setString(3, sContra);
+                    stmt.setString(4, sDNIinicial);
+                    stmt.execute();
+
+                    stmt = conn.prepareStatement("UPDATE tb_datos_usuarios SET NIF = ?, Nombre = ?, Apellido1 = ?, Apellido2 = ?, Fecha_nacimiento = ? WHERE tb_datos_usuarios.NIF = ?;");
+                    stmt.setString(1, sDNI);
+                    stmt.setString(2, sNombre);
+                    stmt.setString(3, sApellido1);
+                    stmt.setString(4, sApellido2);
+                    stmt.setString(5, sFechaNaci);
+                    stmt.setString(6, sDNIinicial);
+                    stmt.execute();
+
+                    JOptionPane.showMessageDialog(jPanel1, "Tus datos se han modificado correctamente.");
+
+                    TextoDNI3.setText("");
+                    TextoDNI5.setText("");
+                    TextoNombre2.setText("");
+                    TextoApellido5.setText("");
+                    TextoApellido6.setText("");
+                    TextoFechaNaci2.setText("");
+                    TextoCorreo2.setText("");
+                    TextoContra2.setText("");
+                    TextoWInBingo2.setText("");
+                    TextoWinPrimitiva2.setText("");
+
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(jPanel1, "El usuario ya existe." + ex.getMessage());
+                TextoDNI5.setText("");
+            }
+        }
+    }//GEN-LAST:event_btnModificar3ActionPerformed
+
+    private void TextoDNI4CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoDNI4CaretUpdate
+        // TODO add your handling code here:
+        this.sDNI = TextoDNI4.getText();
+        this.sDNI = Registrar.introducirDNI(sDNI);
+        if (this.sDNI.equals("error")) {
+            this.bErrorDNI = true;
+        } else {
+            this.bErrorDNI = false;
+        }
+    }//GEN-LAST:event_TextoDNI4CaretUpdate
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnEliminarActionPerformed
+        if (bErrorDNI == true) {
+            JOptionPane.showMessageDialog(jPanel1, "DNI inválido. Debe tener 8 números y una letra mayúscula.");
+        } else {
+            try {
+                if (!Registrar.SQLComprobarCliente(sDNI)) {
+                    throw new Exception();
+                }
 
-    private void TextoDNI4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoDNI4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextoDNI4ActionPerformed
+                var conn = ConexionBaseDatos.getConnection();
+                if (conn != null) {
+
+                    var stmt = conn.prepareStatement("DELETE FROM tb_victorias_usuarios WHERE tb_victorias_usuarios.NIF = ?;");
+                    stmt.setString(1, sDNI);
+                    stmt.execute();
+
+                    stmt = conn.prepareStatement("DELETE FROM tb_usuarios WHERE tb_usuarios.NIF = ?;");
+                    stmt.setString(1, sDNI);
+                    stmt.execute();
+
+                    stmt = conn.prepareStatement("DELETE FROM tb_datos_usuarios WHERE NIF = ?");
+                    stmt.setString(1, sDNI);
+                    stmt.execute();
+
+                    JOptionPane.showMessageDialog(jPanel1, "Se ha eliminado al usuario correctamenta.");
+
+                    TextoDNI4.setText("");
+
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(jPanel1, "El usuario no existe.");
+                TextoDNI4.setText("");
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
         // TODO add your handling code here:
+        try {
+            var conn = ConexionBaseDatos.getConnection();
+            var stmt = conn.prepareStatement(
+                    "SELECT d.NIF, d.Nombre, d.Apellido1, d.Apellido2, d.Fecha_nacimiento, d.Sexo, "
+                    + "u.Correo_electronico, u.Password, v.victorias_bingo, v.victorias_primitiva "
+                    + "FROM tb_datos_usuarios d "
+                    + "JOIN tb_usuarios u ON d.NIF = u.NIF "
+                    + "JOIN tb_victorias_usuarios v ON d.NIF = v.NIF"
+            );
+
+            var rs = stmt.executeQuery();
+            StringBuilder sb = new StringBuilder();
+
+            // Cabecera
+            sb.append(String.format("%-10s %-10s %-22s %-12s %-6s %-25s %-15s %-7s %-9s\n",
+                    "DNI", "Nombre", "Apellidos", "Nacimiento", "Sexo", "Correo", "Contraseña", "Bingo", "Primitiva"));
+            sb.append("-------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+            while (rs.next()) {
+                String sDNI = rs.getString("NIF");
+                String sNombre = rs.getString("Nombre");
+                String sApellido1 = rs.getString("Apellido1");
+                String sApellido2 = rs.getString("Apellido2");
+                String sFechaNaci = rs.getString("Fecha_nacimiento");
+                String sSexo = rs.getString("Sexo");
+                String sCorreo = rs.getString("Correo_electronico");
+                String sContra = rs.getString("Password");
+                int sBingo = rs.getInt("victorias_bingo");
+                int sPrimitiva = rs.getInt("victorias_primitiva");
+
+                String apellidos = sApellido1 + " " + sApellido2;
+
+                sb.append(String.format("%-10s %-10s %-22s %-12s %-6s %-25s %-15s %-7d %-9d\n",
+                        sDNI, sNombre, apellidos, sFechaNaci, sSexo, sCorreo, sContra, sBingo, sPrimitiva));
+            }
+ 
+            areaVer.setText(sb.toString());
+        } catch (SQLException ex) {
+            areaVer.setText("Error al cargar datos: " + ex.getMessage());
+        }
+
     }//GEN-LAST:event_btnVerActionPerformed
 
     /**
@@ -693,30 +1367,38 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea AreaBuscar;
     private javax.swing.JTextField TextoApellido1;
     private javax.swing.JTextField TextoApellido2;
-    private javax.swing.JTextField TextoApellido3;
-    private javax.swing.JTextField TextoApellido4;
-    private javax.swing.JTextField TextoDNI;
+    private javax.swing.JTextField TextoApellido5;
+    private javax.swing.JTextField TextoApellido6;
+    private javax.swing.JPasswordField TextoContra1;
+    private javax.swing.JPasswordField TextoContra2;
+    private javax.swing.JTextField TextoCorreo1;
+    private javax.swing.JTextField TextoCorreo2;
     private javax.swing.JTextField TextoDNI1;
     private javax.swing.JTextField TextoDNI2;
     private javax.swing.JTextField TextoDNI3;
     private javax.swing.JTextField TextoDNI4;
-    private javax.swing.JTextField TextoFechaNaci;
+    private javax.swing.JTextField TextoDNI5;
     private javax.swing.JTextField TextoFechaNaci1;
-    private javax.swing.JTextField TextoNombre;
+    private javax.swing.JTextField TextoFechaNaci2;
     private javax.swing.JTextField TextoNombre1;
-    private javax.swing.JTextField TextoWInBingo;
+    private javax.swing.JTextField TextoNombre2;
     private javax.swing.JTextField TextoWInBingo1;
-    private javax.swing.JTextField TextoWinPrimitiva;
+    private javax.swing.JTextField TextoWInBingo2;
     private javax.swing.JTextField TextoWinPrimitiva1;
+    private javax.swing.JTextField TextoWinPrimitiva2;
     private javax.swing.JTextArea areaVer;
-    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnModificar;
+    private javax.swing.JRadioButton btnFemenino;
+    private javax.swing.JRadioButton btnMasculino;
+    private javax.swing.JButton btnModificar1;
     private javax.swing.JButton btnModificar2;
+    private javax.swing.JButton btnModificar3;
     private javax.swing.JButton btnVer;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -725,27 +1407,32 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelApellido1;
     private javax.swing.JLabel labelApellido2;
     private javax.swing.JLabel labelApellido3;
-    private javax.swing.JLabel labelApellido4;
+    private javax.swing.JLabel labelApellido5;
+    private javax.swing.JLabel labelApellido6;
+    private javax.swing.JLabel labelApellido7;
     private javax.swing.JLabel labelDNI;
-    private javax.swing.JLabel labelDNI1;
     private javax.swing.JLabel labelDNI2;
     private javax.swing.JLabel labelDNI3;
     private javax.swing.JLabel labelDNI4;
+    private javax.swing.JLabel labelDNI5;
     private javax.swing.JLabel labelFechaNaci;
     private javax.swing.JLabel labelFechaNaci1;
+    private javax.swing.JLabel labelFechaNaci2;
+    private javax.swing.JLabel labelFechaNaci3;
     private javax.swing.JLabel labelNombre;
-    private javax.swing.JLabel labelNombre1;
+    private javax.swing.JLabel labelNombre2;
     private javax.swing.JLabel labelNombreLoteria1;
-    private javax.swing.JLabel labelNombreLoteria2;
     private javax.swing.JLabel labelNombreLoteria3;
     private javax.swing.JLabel labelNombreLoteria4;
+    private javax.swing.JLabel labelNombreLoteria5;
+    private javax.swing.JLabel labelSexo;
     private javax.swing.JLabel labelbingoWin;
     private javax.swing.JLabel labelbingoWin1;
-    private javax.swing.JLabel labelbingoWin2;
-    private javax.swing.JLabel labelbingoWin3;
+    private javax.swing.JLabel labelbingoWin4;
+    private javax.swing.JLabel labelbingoWin5;
+    private javax.swing.JLabel labelbingoWin6;
     // End of variables declaration//GEN-END:variables
 }

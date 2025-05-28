@@ -3,6 +3,8 @@ package ej_jsiwng_primitiva;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,8 +18,9 @@ public class BingoGUI extends JDialog {
     private final JLabel[][] etiquetasCarton;
     private final JLabel lblNumero;
     private final JButton btnSacarNumero;
-    public BingoGUI(Window parent, BingoJuego juego) {
 
+    public BingoGUI(Window parent, BingoJuego juego) {
+        super(parent, ("Usuario: "+ LogIn.usuario[1] + " " + LogIn.usuario[2] + " " + LogIn.usuario[3]), ModalityType.APPLICATION_MODAL);
         this.juego = juego;
         etiquetasCarton = new JLabel[3][9];
 
@@ -81,6 +84,11 @@ public class BingoGUI extends JDialog {
             if (juego.getCarton().verificarBingo()) {
                 mostrarVentanaGanador();
                 btnSacarNumero.setEnabled(false);
+                try {
+                    SQLmodificarVictorias(LogIn.usuario[0]);
+                } catch (SQLException ex) {
+                    Logger.getLogger(BingoGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -100,6 +108,27 @@ public class BingoGUI extends JDialog {
             for (int col = 0; col < 9; col++) {
                 if (marcados[fila][col]) {
                     etiquetasCarton[fila][col].setForeground(Color.RED);
+                }
+            }
+        }
+    }
+
+    /**
+     * Metodo para añadir una victoria a un cliente
+     *
+     * @param codigo
+     * @throws java.sql.SQLException
+     */
+    public static void SQLmodificarVictorias(String codigo) throws SQLException {
+        try (Connection conexion = ConexionBaseDatos.getConnection()) {
+            if (conexion != null) {
+                try {
+                    PreparedStatement stmt = conexion.prepareStatement("UPDATE tb_victorias_usuarios SET victorias_bingo = victorias_bingo+1 WHERE NIF=? ");
+                    stmt.setString(1, codigo);
+                    stmt.execute();
+
+                } catch (SQLException e) {
+                    System.out.println("Error en la consulta: " + e.getMessage());
                 }
             }
         }

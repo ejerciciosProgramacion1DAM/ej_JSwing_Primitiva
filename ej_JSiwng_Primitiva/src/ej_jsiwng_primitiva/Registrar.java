@@ -43,7 +43,6 @@ public class Registrar extends javax.swing.JFrame {
         initComponents();
     }
 
-    
     public static String introducirDNI(String dni) {
         String codigo;
         codigo = dni.toUpperCase();
@@ -74,7 +73,7 @@ public class Registrar extends javax.swing.JFrame {
         }
         return false;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -477,8 +476,7 @@ public class Registrar extends javax.swing.JFrame {
         } else {
             try {
                 if (SQLComprobarCliente(sDNI)) {
-                    JOptionPane.showMessageDialog(jPanel1, "El usuario ya existe.");
-                    return;
+                    throw new Exception();
                 }
 
                 var conn = ConexionBaseDatos.getConnection();
@@ -505,20 +503,21 @@ public class Registrar extends javax.swing.JFrame {
                     stmt.execute();
 
                     JOptionPane.showMessageDialog(jPanel1, "Cliente guardado correctamente.");
+
+                    textoNombre.setText("");
+                    TextoPassw.setText("");
+                    TextoEmail.setText("");
+                    TextoDNI.setText("");
+                    TextoApellido1.setText("");
+                    TextoApellido2.setText("");
+                    buttonGroup1.clearSelection();
+                    dia.setSelectedIndex(0);
+                    mes.setSelectedIndex(0);
+                    year.setSelectedIndex(0);
                 }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(jPanel1, "Error al guardar: " + ex.getMessage());
+                JOptionPane.showMessageDialog(jPanel1, "El usuario ya existe.");
             }
-            textoNombre.setText("");
-            TextoPassw.setText("");
-            TextoEmail.setText("");
-            TextoDNI.setText("");
-            TextoApellido1.setText("");
-            TextoApellido2.setText("");
-            buttonGroup1.clearSelection();
-            dia.setSelectedIndex(0);
-            mes.setSelectedIndex(0);
-            year.setSelectedIndex(0);
         }
     }//GEN-LAST:event_btnGuardarUserActionPerformed
 

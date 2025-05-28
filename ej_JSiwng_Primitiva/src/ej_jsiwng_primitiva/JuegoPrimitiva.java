@@ -4,7 +4,25 @@
  */
 package ej_jsiwng_primitiva;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.Window;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -12,11 +30,76 @@ import java.awt.Color;
  */
 public class JuegoPrimitiva extends javax.swing.JFrame {
 
+    private List<JToggleButton> botones;
+
     /**
      * Creates new form JuegoPrimitiva
      */
     public JuegoPrimitiva() {
         initComponents();
+        setTitle("Usuario: " + LogIn.usuario[1] + " " + LogIn.usuario[2] + " " + LogIn.usuario[3]);
+        botones = Arrays.asList(
+                btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10,
+                btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20,
+                btn21, btn22, btn23, btn24, btn25, btn26, btn27, btn28, btn29, btn30,
+                btn31, btn32, btn33, btn34, btn35, btn36, btn37, btn38, btn39, btn40,
+                btn41, btn42, btn43, btn44, btn45, btn46, btn47, btn48, btn49
+        );
+    }
+
+    //genera una combinacion de numeros ganadores
+    private List<Integer> generarCombinacionGanadora() {
+        List<Integer> numeros = new ArrayList<>();
+        Random rand = new Random();
+
+        while (numeros.size() < 6) {
+            int num = rand.nextInt(49) + 1;
+            if (!numeros.contains(num)) {
+                numeros.add(num);
+            }
+        }
+        return numeros;
+    }
+
+    //comprueba si se han seleccionado 6 exactamente
+    private List<Integer> contarSeleccionados() {
+        List<Integer> numerosSeleccionados = new ArrayList<>();
+
+        for (int i = 0; i < botones.size(); i++) {
+            JToggleButton boton = botones.get(i);
+            if (boton.isSelected()) {
+                try {
+                    int numero = Integer.parseInt(boton.getText());
+                    numerosSeleccionados.add(numero);
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Error al leer número del botón: " + boton.getText());
+                }
+            }
+        }
+
+        if (numerosSeleccionados.size() != 6) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar exactamente 6 números.");
+            return new ArrayList<>(); // Devuelve lista vacía si no hay 6 números seleccionados
+        } else {
+            // Ordenar para mejor visualización (opcional)
+            JOptionPane.showMessageDialog(this, "Has jugado los números: " + numerosSeleccionados);
+            return numerosSeleccionados;
+        }
+    }
+
+    public static void SQLmodificarVictorias(String codigo) throws SQLException {
+        try (Connection conexion = ConexionBaseDatos.getConnection()) {
+            if (conexion != null) {
+                try {
+                    PreparedStatement stmt = conexion.prepareStatement("UPDATE tb_victorias_usuarios SET victorias_primitiva = victorias_primitiva+1 WHERE NIF=? ");
+                    stmt.setString(1, codigo);
+                    stmt.execute();
+
+                } catch (SQLException e) {
+                    System.out.println("Error en la consulta: " + e.getMessage());
+                }
+            }
+        }
     }
 
     /**
@@ -90,402 +173,157 @@ public class JuegoPrimitiva extends javax.swing.JFrame {
 
         btn2.setBackground(new java.awt.Color(0, 153, 0));
         btn2.setText("2");
-        btn2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn2ActionPerformed(evt);
-            }
-        });
 
         btn3.setBackground(new java.awt.Color(0, 153, 0));
         btn3.setText("3");
         btn3.setToolTipText("");
-        btn3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn3ActionPerformed(evt);
-            }
-        });
 
         btn4.setBackground(new java.awt.Color(0, 153, 0));
         btn4.setText("4");
-        btn4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn4ActionPerformed(evt);
-            }
-        });
 
         btn5.setBackground(new java.awt.Color(0, 153, 0));
         btn5.setText("5");
         btn5.setToolTipText("");
-        btn5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn5ActionPerformed(evt);
-            }
-        });
 
         btn12.setBackground(new java.awt.Color(0, 153, 0));
         btn12.setText("12");
-        btn12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn12ActionPerformed(evt);
-            }
-        });
 
         btn13.setBackground(new java.awt.Color(0, 153, 0));
         btn13.setText("13");
-        btn13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn13ActionPerformed(evt);
-            }
-        });
 
         btn14.setBackground(new java.awt.Color(0, 153, 0));
         btn14.setText("14");
-        btn14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn14ActionPerformed(evt);
-            }
-        });
 
         btn15.setBackground(new java.awt.Color(0, 153, 0));
         btn15.setText("15");
-        btn15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn15ActionPerformed(evt);
-            }
-        });
 
         btn19.setBackground(new java.awt.Color(0, 153, 0));
         btn19.setText("19");
-        btn19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn19ActionPerformed(evt);
-            }
-        });
 
         btn6.setBackground(new java.awt.Color(0, 153, 0));
         btn6.setText("6");
-        btn6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn6ActionPerformed(evt);
-            }
-        });
 
         btn7.setBackground(new java.awt.Color(0, 153, 0));
         btn7.setText("7");
-        btn7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn7ActionPerformed(evt);
-            }
-        });
 
         btn8.setBackground(new java.awt.Color(0, 153, 0));
         btn8.setText("8");
-        btn8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn8ActionPerformed(evt);
-            }
-        });
 
         btn9.setBackground(new java.awt.Color(0, 153, 0));
         btn9.setText("9");
-        btn9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn9ActionPerformed(evt);
-            }
-        });
 
         btn16.setBackground(new java.awt.Color(0, 153, 0));
         btn16.setText("16");
-        btn16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn16ActionPerformed(evt);
-            }
-        });
 
         btn17.setBackground(new java.awt.Color(0, 153, 0));
         btn17.setText("17");
-        btn17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn17ActionPerformed(evt);
-            }
-        });
 
         btn18.setBackground(new java.awt.Color(0, 153, 0));
         btn18.setText("18");
-        btn18.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn18ActionPerformed(evt);
-            }
-        });
 
         btn11.setBackground(new java.awt.Color(0, 153, 0));
         btn11.setText("11");
-        btn11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn11ActionPerformed(evt);
-            }
-        });
 
         btn10.setBackground(new java.awt.Color(0, 153, 0));
         btn10.setText("10");
         btn10.setMaximumSize(new java.awt.Dimension(43, 22));
         btn10.setMinimumSize(new java.awt.Dimension(43, 22));
         btn10.setPreferredSize(new java.awt.Dimension(43, 22));
-        btn10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn10ActionPerformed(evt);
-            }
-        });
 
         btn25.setBackground(new java.awt.Color(0, 153, 0));
         btn25.setText("25");
-        btn25.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn25ActionPerformed(evt);
-            }
-        });
 
         btn29.setBackground(new java.awt.Color(0, 153, 0));
         btn29.setText("29");
-        btn29.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn29ActionPerformed(evt);
-            }
-        });
 
         btn26.setBackground(new java.awt.Color(0, 153, 0));
         btn26.setText("26");
-        btn26.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn26ActionPerformed(evt);
-            }
-        });
 
         btn27.setBackground(new java.awt.Color(0, 153, 0));
         btn27.setText("27");
-        btn27.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn27ActionPerformed(evt);
-            }
-        });
 
         btn28.setBackground(new java.awt.Color(0, 153, 0));
         btn28.setText("28");
-        btn28.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn28ActionPerformed(evt);
-            }
-        });
 
         btn21.setBackground(new java.awt.Color(0, 153, 0));
         btn21.setText("21");
-        btn21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn21ActionPerformed(evt);
-            }
-        });
 
         btn20.setBackground(new java.awt.Color(0, 153, 0));
         btn20.setText("20");
-        btn20.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn20ActionPerformed(evt);
-            }
-        });
 
         btn22.setBackground(new java.awt.Color(0, 153, 0));
         btn22.setText("22");
-        btn22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn22ActionPerformed(evt);
-            }
-        });
 
         btn23.setBackground(new java.awt.Color(0, 153, 0));
         btn23.setText("23");
-        btn23.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn23ActionPerformed(evt);
-            }
-        });
 
         btn24.setBackground(new java.awt.Color(0, 153, 0));
         btn24.setText("24");
-        btn24.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn24ActionPerformed(evt);
-            }
-        });
 
         btn35.setBackground(new java.awt.Color(0, 153, 0));
         btn35.setText("35");
-        btn35.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn35ActionPerformed(evt);
-            }
-        });
 
         btn39.setBackground(new java.awt.Color(0, 153, 0));
         btn39.setText("39");
-        btn39.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn39ActionPerformed(evt);
-            }
-        });
 
         btn36.setBackground(new java.awt.Color(0, 153, 0));
         btn36.setText("36");
-        btn36.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn36ActionPerformed(evt);
-            }
-        });
 
         btn37.setBackground(new java.awt.Color(0, 153, 0));
         btn37.setText("37");
-        btn37.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn37ActionPerformed(evt);
-            }
-        });
 
         btn38.setBackground(new java.awt.Color(0, 153, 0));
         btn38.setText("38");
-        btn38.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn38ActionPerformed(evt);
-            }
-        });
 
         btn31.setBackground(new java.awt.Color(0, 153, 0));
         btn31.setText("31");
-        btn31.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn31ActionPerformed(evt);
-            }
-        });
 
         btn30.setBackground(new java.awt.Color(0, 153, 0));
         btn30.setText("30");
-        btn30.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn30ActionPerformed(evt);
-            }
-        });
 
         btn32.setBackground(new java.awt.Color(0, 153, 0));
         btn32.setText("32");
-        btn32.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn32ActionPerformed(evt);
-            }
-        });
 
         btn33.setBackground(new java.awt.Color(0, 153, 0));
         btn33.setText("33");
-        btn33.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn33ActionPerformed(evt);
-            }
-        });
 
         btn34.setBackground(new java.awt.Color(0, 153, 0));
         btn34.setText("34");
-        btn34.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn34ActionPerformed(evt);
-            }
-        });
 
         btn45.setBackground(new java.awt.Color(0, 153, 0));
         btn45.setText("45");
-        btn45.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn45ActionPerformed(evt);
-            }
-        });
 
         btn49.setBackground(new java.awt.Color(0, 153, 0));
         btn49.setText("49");
-        btn49.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn49ActionPerformed(evt);
-            }
-        });
 
         btn46.setBackground(new java.awt.Color(0, 153, 0));
         btn46.setText("46");
-        btn46.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn46ActionPerformed(evt);
-            }
-        });
 
         btn47.setBackground(new java.awt.Color(0, 153, 0));
         btn47.setText("47");
-        btn47.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn47ActionPerformed(evt);
-            }
-        });
 
         btn48.setBackground(new java.awt.Color(0, 153, 0));
         btn48.setText("48");
-        btn48.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn48ActionPerformed(evt);
-            }
-        });
 
         btn41.setBackground(new java.awt.Color(0, 153, 0));
         btn41.setText("41");
         btn41.setToolTipText("");
-        btn41.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn41ActionPerformed(evt);
-            }
-        });
 
         btn40.setBackground(new java.awt.Color(0, 153, 0));
         btn40.setText("40");
-        btn40.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn40ActionPerformed(evt);
-            }
-        });
 
         btn42.setBackground(new java.awt.Color(0, 153, 0));
         btn42.setText("42");
-        btn42.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn42ActionPerformed(evt);
-            }
-        });
 
         btn43.setBackground(new java.awt.Color(0, 153, 0));
         btn43.setText("43");
-        btn43.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn43ActionPerformed(evt);
-            }
-        });
 
         btn44.setBackground(new java.awt.Color(0, 153, 0));
         btn44.setText("44");
-        btn44.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn44ActionPerformed(evt);
-            }
-        });
 
         btn1.setBackground(new java.awt.Color(0, 153, 0));
         btn1.setText("1");
         btn1.setToolTipText("");
-        btn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn1ActionPerformed(evt);
-            }
-        });
 
         labelNombreLoteria1.setBackground(new java.awt.Color(0, 153, 0));
         labelNombreLoteria1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -722,204 +560,51 @@ public class JuegoPrimitiva extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn1ActionPerformed
-
-    private void btn44ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn44ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn44ActionPerformed
-
-    private void btn43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn43ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn43ActionPerformed
-
-    private void btn42ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn42ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn42ActionPerformed
-
-    private void btn40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn40ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn40ActionPerformed
-
-    private void btn41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn41ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn41ActionPerformed
-
-    private void btn48ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn48ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn48ActionPerformed
-
-    private void btn47ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn47ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn47ActionPerformed
-
-    private void btn46ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn46ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn46ActionPerformed
-
-    private void btn49ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn49ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn49ActionPerformed
-
-    private void btn45ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn45ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn45ActionPerformed
-
-    private void btn34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn34ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn34ActionPerformed
-
-    private void btn33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn33ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn33ActionPerformed
-
-    private void btn32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn32ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn32ActionPerformed
-
-    private void btn30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn30ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn30ActionPerformed
-
-    private void btn31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn31ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn31ActionPerformed
-
-    private void btn38ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn38ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn38ActionPerformed
-
-    private void btn37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn37ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn37ActionPerformed
-
-    private void btn36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn36ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn36ActionPerformed
-
-    private void btn39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn39ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn39ActionPerformed
-
-    private void btn35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn35ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn35ActionPerformed
-
-    private void btn24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn24ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn24ActionPerformed
-
-    private void btn23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn23ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn23ActionPerformed
-
-    private void btn22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn22ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn22ActionPerformed
-
-    private void btn20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn20ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn20ActionPerformed
-
-    private void btn21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn21ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn21ActionPerformed
-
-    private void btn28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn28ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn28ActionPerformed
-
-    private void btn27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn27ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn27ActionPerformed
-
-    private void btn26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn26ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn26ActionPerformed
-
-    private void btn29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn29ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn29ActionPerformed
-
-    private void btn25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn25ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn25ActionPerformed
-
-    private void btn10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn10ActionPerformed
-
-    private void btn11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn11ActionPerformed
-
-    private void btn18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn18ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn18ActionPerformed
-
-    private void btn17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn17ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn17ActionPerformed
-
-    private void btn16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn16ActionPerformed
-
-    private void btn9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn9ActionPerformed
-
-    private void btn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn8ActionPerformed
-
-    private void btn7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn7ActionPerformed
-
-    private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn6ActionPerformed
-
-    private void btn19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn19ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn19ActionPerformed
-
-    private void btn15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn15ActionPerformed
-
-    private void btn14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn14ActionPerformed
-
-    private void btn13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn13ActionPerformed
-
-    private void btn12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn12ActionPerformed
-
-    private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn5ActionPerformed
-
-    private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn4ActionPerformed
-
-    private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn3ActionPerformed
-
-    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn2ActionPerformed
-
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
         // TODO add your handling code here:
+        List<Integer> seleccionados = contarSeleccionados();
+        List<Integer> ganadora = generarCombinacionGanadora();
+
+        if (!seleccionados.isEmpty()) {
+            int aciertos = 0;
+            for (int numero : seleccionados) {
+                if (ganadora.contains(numero)) {
+                    aciertos++;
+                }
+            }
+
+            if (aciertos == 6) {
+                try {
+                    SQLmodificarVictorias(LogIn.usuario[0]);
+                } catch (SQLException e) {
+                }
+                jPanel1.removeAll(); // Limpia contenido previo
+                Window window = SwingUtilities.getWindowAncestor(jPanel1);
+                if (window instanceof JFrame) {
+                    JFrame frame = (JFrame) window;
+                    frame.setTitle("Usuario: " + LogIn.usuario[1] + " " + LogIn.usuario[2] + " " + LogIn.usuario[3]);
+                    frame.setSize(400, 350); // tamaño fijo que quieras
+                    frame.setLocationRelativeTo(null); // opcional para centrar
+                }
+                JLabel mensaje = new JLabel("¡Has ganado 🎉!", SwingConstants.CENTER);
+                mensaje.setFont(new Font("Ubuntu Mono", Font.BOLD, 30));
+                mensaje.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+                ImageIcon gif = new ImageIcon(getClass().getResource("/ej_jsiwng_primitiva/primitivaWIn.gif"));
+                JLabel imagen = new JLabel(gif, SwingConstants.CENTER);
+
+                jPanel1.setLayout(new BorderLayout());
+                jPanel1.add(mensaje, BorderLayout.NORTH);
+                jPanel1.add(imagen, BorderLayout.CENTER);
+
+                jPanel1.revalidate();
+                jPanel1.repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Tu combinación: " + seleccionados + "\nCombinación ganadora: " + ganadora + "\nAciertos: " + aciertos);
+            }
+        }
+
+
     }//GEN-LAST:event_btnJugarActionPerformed
 
     /**

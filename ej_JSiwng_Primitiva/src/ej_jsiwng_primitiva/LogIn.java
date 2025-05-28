@@ -4,9 +4,6 @@
  */
 package ej_jsiwng_primitiva;
 
-import static ej_jsiwng_primitiva.Registrar.SQLComprobarCliente;
-import javax.swing.JOptionPane;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +18,11 @@ public class LogIn extends javax.swing.JFrame {
     private String sEmail;
     private String sContra;
     private String sDNI;
+    private boolean bUser = true;
+    private String cliente = null;
+    public static String[] usuario;
+    public static String[] login_usuario;
+    public static String[] wins_usuario;
 
     /**
      * Creates new form LogIn
@@ -31,7 +33,8 @@ public class LogIn extends javax.swing.JFrame {
 
     public String buscarEmail(String email, String passw) {
         String sDNI = "error";  // Valor por defecto si no se encuentra
-
+        String parametros = email + " " + passw;
+        login_usuario = parametros.split("\\s+");
         String consulta = "SELECT NIF FROM tb_usuarios WHERE Correo_electronico = ? AND password = ?";
 
         try {
@@ -51,6 +54,26 @@ public class LogIn extends javax.swing.JFrame {
         }
 
         return sDNI;
+    }
+
+    public String verVictorias(String dni) {
+        String parametros="";
+        try {
+            var conn = ConexionBaseDatos.getConnection();
+            if (conn != null) {
+                var stmt = conn.prepareStatement("SELECT * FROM tb_victorias_usuarios WHERE NIF=?");
+                stmt.setString(1, sDNI);
+                var resultado = stmt.executeQuery();
+                if (resultado.next()) {
+                    String bingo = resultado.getString(2);
+                    String primitiva = resultado.getString(3);
+                    parametros = bingo + " " + primitiva;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar el email en la base de datos: " + e.getMessage());
+        }
+        return parametros;
     }
 
     /**
@@ -226,40 +249,41 @@ public class LogIn extends javax.swing.JFrame {
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         // TODO add your handling code here:
         this.sDNI = buscarEmail(sEmail, sContra);
-
+        wins_usuario = verVictorias(sDNI).split("\\s+");
         if (!this.sDNI.equals("error")) {
             try {
                 var conn = ConexionBaseDatos.getConnection();
                 if (conn != null) {
-                    var stmt = conn.prepareStatement("SELECT Nombre, Apellido1, Apellido2 FROM tb_datos_usuarios WHERE NIF = ?");
-                    stmt.setString(1, this.sDNI);
-
-                    ResultSet rs = stmt.executeQuery();
-                    if (rs.next()) {
-                        String nombre = rs.getString("Nombre");
-                        String apellido1 = rs.getString("Apellido1");
-                        String apellido2 = rs.getString("Apellido2");
-
-                        JOptionPane.showMessageDialog(jPanel1, "Bienvenido " + nombre + " " + apellido1 + " " + apellido2 + ".");
+                    var stmt = conn.prepareStatement("SELECT * FROM tb_datos_usuarios WHERE NIF=?");
+                    stmt.setString(1, sDNI);
+                    var resultado = stmt.executeQuery();
+                    if (resultado.next()) {
+                        String nombre = resultado.getString(2);
+                        String apellido1 = resultado.getString(3);
+                        String apellido2 = resultado.getString(4);
+                        String fechaNaci = resultado.getString(5);
+                        cliente = sDNI + " " + nombre + " " + apellido1 + " " + apellido2 + " " + fechaNaci;
+                        usuario = cliente.split("\\s+");
+                        JOptionPane.showMessageDialog(jPanel1, "Bienvenido: " + usuario[1] + " " + usuario[2] + " " + usuario[3]);
                     } else {
-                        JOptionPane.showMessageDialog(jPanel1, "No se encontraron datos del usuario.");
+                        JOptionPane.showMessageDialog(null, "Cliente no encontrado.");
                     }
-
-                    rs.close();
                     stmt.close();
                     conn.close();
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(jPanel1, "Error al buscar al cliente: " + e.getMessage());
+                bUser = false;
             }
         } else {
             JOptionPane.showMessageDialog(jPanel1, "Email o contraseña incorrectos.");
+            bUser = false;
         }
 
-        if (!sDNI.equals("77964837N")) {
+        if (!sDNI.equals("77964837N") && bUser == true) {
             new Menu_principal().setVisible(true);
             dispose();
-        } else {
+        } else if (sDNI.equals("77964837N")) {
             new Menu_principal_admin().setVisible(true);
             dispose();
         }
