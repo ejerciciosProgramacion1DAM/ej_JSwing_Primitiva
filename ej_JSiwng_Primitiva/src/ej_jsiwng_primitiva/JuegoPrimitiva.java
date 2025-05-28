@@ -602,8 +602,6 @@ public class JuegoPrimitiva extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Tu combinación: " + seleccionados + "\nCombinación ganadora: " + ganadora + "\nAciertos: " + aciertos);
             }
         }
-
-
     }//GEN-LAST:event_btnJugarActionPerformed
 
     /**
