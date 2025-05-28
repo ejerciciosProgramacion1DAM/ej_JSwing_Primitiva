@@ -1196,8 +1196,8 @@ public class MenuDatosAdmin extends javax.swing.JFrame {
 
                     var stmt = conn.prepareStatement("UPDATE tb_victorias_usuarios SET NIF = ?, victorias_bingo = ?, victorias_primitiva = ? WHERE tb_victorias_usuarios.NIF = ?;");
                     stmt.setString(1, sDNI);
-                    stmt.setInt(2, Integer.parseInt(LogIn.wins_usuario[0]));
-                    stmt.setInt(3, Integer.parseInt(LogIn.wins_usuario[1]));
+                    stmt.setInt(2, Integer.parseInt(sBingo));
+                    stmt.setInt(3, Integer.parseInt(sPrimitiva));
                     stmt.setString(4, sDNIinicial);
                     stmt.execute();
 
