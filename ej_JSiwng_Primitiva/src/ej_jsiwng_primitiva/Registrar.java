@@ -472,6 +472,8 @@ public class Registrar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(jPanel1, "Fecha nacimiento inválida. Debe Seleccionar algun nomero en los tres campos.");
         } else if (bErrorNull == true) {
             JOptionPane.showMessageDialog(jPanel1, "No puede haber campos vacios.");
+        } else if (bErrorSexo == true) {
+            JOptionPane.showMessageDialog(jPanel1, "No puede haber campos en el genero.");
         } else {
             try {
                 if (SQLComprobarCliente(sDNI)) {
@@ -571,7 +573,6 @@ public class Registrar extends javax.swing.JFrame {
         } else {
             this.bErrorNull = false;
         }
-
     }//GEN-LAST:event_TextoApellido1CaretUpdate
 
     private void TextoApellido2CaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_TextoApellido2CaretUpdate
@@ -588,7 +589,6 @@ public class Registrar extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.sSexo = "M";
         this.bErrorSexo = false;
-
     }//GEN-LAST:event_btnMasculinoActionPerformed
 
     private void textoNombreCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_textoNombreCaretUpdate
