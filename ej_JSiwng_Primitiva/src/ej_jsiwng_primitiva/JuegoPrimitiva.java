@@ -585,7 +585,7 @@ public class JuegoPrimitiva extends javax.swing.JFrame {
                     frame.setSize(400, 350); // tamaño fijo que quieras
                     frame.setLocationRelativeTo(null); // opcional para centrar
                 }
-                JLabel mensaje = new JLabel("¡Has ganado 🎉!", SwingConstants.CENTER);
+                JLabel mensaje = new JLabel("¡Has ganado!", SwingConstants.CENTER);
                 mensaje.setFont(new Font("Ubuntu Mono", Font.BOLD, 30));
                 mensaje.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
