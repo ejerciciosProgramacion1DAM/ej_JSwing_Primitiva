@@ -35,11 +35,13 @@ public class Panel_inicial {
 
             Font fuenteBoton = new Font("Ubuntu Mono", Font.BOLD, 18);
 
-            for (JButton btn : new JButton[]{btnRegistrar, btnLogIn}) {
-                btn.setFont(fuenteBoton);
-                btn.setPreferredSize(new Dimension(160, 40));
-                surPanel.add(btn);
-            }
+            btnRegistrar.setFont(fuenteBoton);
+            btnRegistrar.setPreferredSize(new Dimension(160, 40));
+            surPanel.add(btnRegistrar);
+
+            btnLogIn.setFont(fuenteBoton);
+            btnLogIn.setPreferredSize(new Dimension(200, 40));
+            surPanel.add(btnLogIn);
 
             // Acciones de los botones
             btnRegistrar.addActionListener(e -> {

@@ -78,7 +78,7 @@ public class BingoGUI extends JDialog {
             actualizarCarton();
 
             if (juego.getCarton().verificarPrimeraLinea()) {
-                JOptionPane.showMessageDialog(BingoGUI.this, "¡Has hecho línea! 🎉");
+                JOptionPane.showMessageDialog(BingoGUI.this, "¡Has hecho línea!");
             }
 
             if (juego.getCarton().verificarBingo()) {
@@ -138,7 +138,7 @@ public class BingoGUI extends JDialog {
         JDialog dialogo = new JDialog(this, "¡BINGO!", true);
         dialogo.setLayout(new BorderLayout());
 
-        JLabel mensaje = new JLabel("¡BINGO! Has ganado 🎉", SwingConstants.CENTER);
+        JLabel mensaje = new JLabel("¡BINGO! Has ganado", SwingConstants.CENTER);
         mensaje.setFont(new Font("Ubuntu Mono", Font.BOLD, 24));
         mensaje.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
